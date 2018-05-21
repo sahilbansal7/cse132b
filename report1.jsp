@@ -25,14 +25,15 @@
 <%-- -------- SELECT Statement Code -------- --%>
 <%
         // Create the statement
-        Statement statement = conn.createStatement();
+        Statement statement1 = conn.createStatement();
+        Statement statement2 = conn.createStatement();
 
         /*
             Display all students who are enrolled in the current quarter
         */
-        ResultSet rs_one = statement.executeQuery
+        ResultSet rs_one = statement1.executeQuery
             ("SELECT * FROM student WHERE enrolled = '1'");
-        ResultSet rs_two = statement.executeQuery
+        ResultSet rs_two = statement2.executeQuery
             ("SELECT * FROM student WHERE enrolled = '1'");
 %>
 
@@ -48,34 +49,29 @@
 <%
         // Iterate over the ResultSet
 
-        while ( rs.next() ) {
+        while ( rs_one.next() ) {
 
 %>
 
     <tr>
     <form action="report1.jsp" method="get">
     <td>
-        <!-- <select>
-            <option value = "<%= rs.getInt("s_ssn") %>" name = "s_ssn" size = "10">
-
-            </option>
-        </select> -->
-        <input value="<%= rs.getInt("s_ssn") %>" 
+        <input value="<%= rs_one.getInt("s_ssn") %>" 
             name="s_ssn" size="10">
     </td>
 
     <td>
-        <input value="<%= rs.getString("first_name") %>" 
+        <input value="<%= rs_one.getString("first_name") %>" 
             name="first_name" size="10">
     </td>
 
     <td>
-        <input value="<%= rs.getString("middle_name") %>"
+        <input value="<%= rs_one.getString("middle_name") %>"
             name="middle_name" size="15">
     </td>
 
     <td>
-        <input value="<%= rs.getString("last_name") %>" 
+        <input value="<%= rs_one.getString("last_name") %>" 
             name="last_name" size="15">
     </td>
     </form>
@@ -90,10 +86,11 @@
 <%-- -------- Close Connection Code -------- --%>
 <%
         // Close the ResultSet
-        rs.close();
-
+        rs_one.close();
+        rs_two.close();
         // Close the Statement
-        statement.close();
+        statement1.close();
+        statement2.close();
 
         // Close the Connection
         conn.close();
