@@ -82,6 +82,20 @@
         }
 %>
 
+<%-- -------- Iteration Code -------- --%>
+<%
+        // Iterate over the ResultSet
+        while ( rs_two.next() ) {
+
+%>
+    <select>
+        <option> <%= rs_two.getInt("s_ssn") %> </option>
+    </select>
+
+<%
+        }
+%>
+    
 
 <%-- -------- Close Connection Code -------- --%>
 <%
