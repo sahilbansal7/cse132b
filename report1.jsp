@@ -90,16 +90,17 @@
 %>
         <!-- <form action="report1.jsp" method="get"> -->
             <select>
-                <option> <%= rs_two.getInt("s_ssn") %> </option>
+                <option id ='ssn'> <%= rs_two.getInt("s_ssn") %> </option>
             </select>
-            <button onclick = "displayCourses()">
-                Click to see course information
-            </button>
             <!-- <input type = "submit">
         </form> -->
 <%
         }
 %>
+
+    <button onclick = "displayCourses()">
+                Click to see course information
+            </button>
     
 
 <%-- -------- Close Connection Code -------- --%>
@@ -119,19 +120,22 @@
         out.println(e.getMessage());
     }
 %>
+    <p id ='course'>
+    </p>
+
     </table>
+
 </td>
 </tr>
 </table>
 
-    <p id = "course">
-    </p>
+    
 </body>
 
 <script type="text/javascript">
     function displayCourses() {
-        document.getElementById("course").innerHTML =
-            document.getElementById("course").value;
+        // console.log("works");
+        document.getElementById("course").innerHTML = document.getElementById("ssn").value;
     }
 </script>
 
