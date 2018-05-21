@@ -32,9 +32,9 @@
             Display all students who are enrolled in the current quarter
         */
         ResultSet rs_one = statement1.executeQuery
-            ("SELECT * FROM student WHERE enrolled = '1'");
+            ("SELECT * FROM student s, student_enrollment se WHERE se.ssn = s.ssn AND se.quarter = 'SPRING' AND se.year = '2018'");
         ResultSet rs_two = statement2.executeQuery
-            ("SELECT * FROM student WHERE enrolled = '1'");
+            ("SELECT * FROM student s, student_enrollment se WHERE se.ssn = s.ssn AND se.quarter = 'SPRING' AND se.year = '2018'");
 %>
 
     <table border="1">
@@ -78,7 +78,6 @@
     </tr>
     </table>
 
-
 <%
         }
 %>
@@ -89,9 +88,9 @@
         while ( rs_two.next() ) {
 
 %>
-    <select>
-        <option> <%= rs_two.getInt("s_ssn") %> </option>
-    </select>
+            <select>
+                <option> <%= rs_two.getInt("s_ssn") %> </option>
+            </select>
 
 <%
         }
