@@ -54,7 +54,7 @@
 %>
 
     <tr>
-    <form action="report1.jsp" method="get">
+    <!-- <form action="report1.jsp" method="get"> -->
     <td>
         <input value="<%= rs_one.getInt("s_ssn") %>" 
             name="s_ssn" size="10">
@@ -74,7 +74,7 @@
         <input value="<%= rs_one.getString("last_name") %>" 
             name="last_name" size="15">
     </td>
-    </form>
+    <!-- </form> -->
     </tr>
     </table>
 
@@ -88,10 +88,15 @@
         while ( rs_two.next() ) {
 
 %>
+        <!-- <form action="report1.jsp" method="get"> -->
             <select>
                 <option> <%= rs_two.getInt("s_ssn") %> </option>
             </select>
-
+            <button onclick = "displayCourses()">
+                Click to see course information
+            </button>
+            <!-- <input type = "submit">
+        </form> -->
 <%
         }
 %>
@@ -119,5 +124,11 @@
 </tr>
 </table>
 </body>
+
+<script type="text/javascript">
+    function displayCourses() {
+        console.log("Hi");    
+    }
+</script>
 
 </html>
