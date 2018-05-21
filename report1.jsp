@@ -27,7 +27,6 @@
         // Create the statement
         Statement statement1 = conn.createStatement();
         Statement statement2 = conn.createStatement();
-        Statement statement3 = conn.createStatement();
 
         /*
             Display all students who are enrolled in the current quarter
@@ -36,7 +35,6 @@
             ("SELECT * FROM student s, student_enrollment se WHERE se.s_ssn = s.s_ssn AND se.quarter = 'SPRING' AND se.year = '2018'");
         ResultSet rs_two = statement2.executeQuery
             ("SELECT * FROM student s, student_enrollment se WHERE se.s_ssn = s.s_ssn AND se.quarter = 'SPRING' AND se.year = '2018'");
-        ResultSet rs_three = statement3.executeQuery("SELECT 1 FROM student");
 %>
 
     <table border="1">
@@ -90,20 +88,18 @@
         while ( rs_two.next() ) {
 
 %>
-        <!-- <form action="report1.jsp" method="get"> -->
+        <form action="report1.jsp" method="get" id = "form1">
             <select>
                 <option id ='ssn'> <%= rs_two.getInt("s_ssn") %> </option>
             </select>
-            <!-- <input type = "submit">
-        </form> -->
+        </form>
 <%
         }
 %>
 
-    <button onclick = "displayCourses()">
-        Click to see course information
-    </button>
-    
+        <button type = "submit" form = "form1">
+            Click to see course information
+        </button>    
 
 <%-- -------- Close Connection Code -------- --%>
 <%
@@ -122,8 +118,6 @@
         out.println(e.getMessage());
     }
 %>
-    <p id ='course'>
-    </p>
 
     </table>
 
@@ -132,9 +126,15 @@
 </table>
 </body>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     function displayCourses() {
-        var course_info = '<div><%=rs_three.getString("last_name") %></div>';  
+        var course_info = '<div>
+        <%= Statement statement3 = conn.createStatement();
+            ResultSet rs_three = statement3.executeQuery("SELECT 1 FROM student");
+            rs_three.getString("last_name")
+            rs_three.close();
+            statement3.close(); %>
+        </div>';  
 
         document.getElementById("course").innerHTML = course_info;
 
@@ -195,6 +195,6 @@
 
         // document.getElementById("ssn").value;
     }
-</script>
+</script> -->
 
 </html>
