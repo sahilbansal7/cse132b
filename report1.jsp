@@ -134,7 +134,7 @@
 
 <script type="text/javascript">
     function displayCourses() {
-        var course_info = <%= rs_three.getString("last_name") %>                
+        var course_info = <%= '<div> rs_three.getString("last_name") </div>' %>                
 
         document.getElementById("course").innerHTML = course_info;
 
