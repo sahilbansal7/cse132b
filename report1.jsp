@@ -152,7 +152,7 @@
         //                 <th> TITLE </th>
         //                 <th> Section ID </th>
         //                 <th> LECTURE TIME </th>
-        //                 <th> Discussion Time </th>
+                        // <th> Discussion Time </th>
         //                 <th> Enrollment Limit </th>
         //                 <th> Discussion Mandatory </th>
         //                 <th> Faculty Name </th>

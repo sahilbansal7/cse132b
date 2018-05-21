@@ -32,17 +32,16 @@
             Display all students who are enrolled in the current quarter
         */
         ResultSet rs_one = statement1.executeQuery
-            ("SELECT * FROM student s, student_enrollment se WHERE se.s_ssn = s.s_ssn AND se.quarter = 'SPRING' AND se.year = '2018'");
+            ("SELECT * FROM class");
         ResultSet rs_two = statement2.executeQuery
-            ("SELECT * FROM student s, student_enrollment se WHERE se.s_ssn = s.s_ssn AND se.quarter = 'SPRING' AND se.year = '2018'");
+            ("SELECT * FROM class");
 %>
 
     <table border="1">
         <tr>
-            <th>SSN</th>
-            <th>First Name</th>
-            <th>Middle Name (Optional)</th>
-            <th>Last Name</th>
+            <th>Course</th>
+            <th>Quarter</th>
+            <th>Year</th>
         </tr>
 
 <%-- -------- Iteration Code -------- --%>
@@ -56,24 +55,20 @@
     <tr>
     <!-- <form action="report1.jsp" method="get"> -->
     <td>
-        <input value="<%= rs_one.getInt("s_ssn") %>" 
-            name="s_ssn" size="10">
+        <input value="<%= rs_one.getString("title") %>" 
+            name="title" size="10">
     </td>
 
     <td>
-        <input value="<%= rs_one.getString("first_name") %>" 
+        <input value="<%= rs_one.getString("quarter") %>" 
             name="first_name" size="10">
     </td>
 
     <td>
-        <input value="<%= rs_one.getString("middle_name") %>"
+        <input value="<%= rs_one.getString("year") %>"
             name="middle_name" size="15">
     </td>
 
-    <td>
-        <input value="<%= rs_one.getString("last_name") %>" 
-            name="last_name" size="15">
-    </td>
     <!-- </form> -->
     </tr>
     </table>
@@ -90,7 +85,7 @@
 %>
         <!-- <form action="report1.jsp" method="get"> -->
             <select>
-                <option> <%= rs_two.getInt("s_ssn") %> </option>
+                <option> <%= rs_two.getString("title") %> </option>
             </select>
             <button onclick = "displayCourses()">
                 Click to see course information
