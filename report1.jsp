@@ -76,6 +76,7 @@
     </td>
     </form>
     </tr>
+    </table>
 
 
 <%
