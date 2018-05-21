@@ -32,9 +32,9 @@
             Display all students who are enrolled in the current quarter
         */
         ResultSet rs_one = statement1.executeQuery
-            ("SELECT * FROM student s, student_enrollment se WHERE se.ssn = s.ssn AND se.quarter = 'SPRING' AND se.year = '2018'");
+            ("SELECT * FROM student s, student_enrollment se WHERE se.s_ssn = s.s_ssn AND se.quarter = 'SPRING' AND se.year = '2018'");
         ResultSet rs_two = statement2.executeQuery
-            ("SELECT * FROM student s, student_enrollment se WHERE se.ssn = s.ssn AND se.quarter = 'SPRING' AND se.year = '2018'");
+            ("SELECT * FROM student s, student_enrollment se WHERE se.s_ssn = s.s_ssn AND se.quarter = 'SPRING' AND se.year = '2018'");
 %>
 
     <table border="1">
