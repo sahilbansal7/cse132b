@@ -35,14 +35,20 @@
             ("SELECT * FROM student s WHERE EXISTS (SELECT ss.s_ssn FROM student ss, student_enrollment se WHERE se.s_ssn = ss.s_ssn)");
         ResultSet rs_two = statement2.executeQuery
             ("SELECT * FROM student s WHERE EXISTS (SELECT ss.s_ssn FROM student ss, student_enrollment se WHERE se.s_ssn = ss.s_ssn)");
-        /* QUERY
-            // ssn comes from user selection
-            ResultSet rs_three = statement3.executeQuery
-                ("SELECT * FROM class where EXISTS (SELECT ct.section_id FROM classes_taken ct WHERE ssn = ct.s_ssn) GROUPBY quarter, year");
-            // Add grade conversion table 
-            ResultSet rs_four = statement4.executeQuery
-                ("SELECT AVG(gcv.DECIMAL) FROM past_classes pc, grade_conversion_table gdc WHERE grade != 'IN' AND pc.grade = gdc.LETTER_GRADE GROUPBY quarter, year");
-        */ 
+%>
+
+<%
+        String action = request.getParameter("action");
+        ResultSet rs_three = null;
+        ResultSet rs_four = null;
+        if (action != null && action.equals("get")) {
+            int ssn = Integer.parseInt(request.getParameter("ssn"));
+            out.println(ssn);
+            Statement statement3 = conn.createStatement();
+            Statement statement4 = conn.createStatement();
+            rs_three = statement3.executeQuery("SELECT * FROM class where EXISTS (SELECT ct.section_id FROM classes_taken ct WHERE ssn = ct.s_ssn) GROUPBY quarter, year");
+            rs_four = statement4s.executeQuery ("SELECT AVG(gcv.DECIMAL) FROM past_classes pc, grade_conversion_table gdc WHERE grade != 'IN' AND pc.grade = gdc.LETTER_GRADE GROUPBY quarter, year");
+        }
 %>
 
     <table border="1">
@@ -62,7 +68,6 @@
 %>
 
     <tr>
-    <!-- <form action="report1.jsp" method="get"> -->
     <td>
         <input value="<%= rs_one.getInt("s_ssn") %>" 
             name="s_ssn" size="10">
@@ -82,32 +87,67 @@
         <input value="<%= rs_one.getString("last_name") %>" 
             name="last_name" size="15">
     </td>
-    <!-- </form> -->
     </tr>
+
+<%
+        }
+%>
     </table>
 
-<%
-        }
-%>
-
 <%-- -------- Iteration Code -------- --%>
+        <form action="report1.jsp" method="get">
+            <input type="hidden" value="get" name="action">
+            <select name="ssn">
 <%
-        // Iterate over the ResultSet
-        while ( rs_two.next() ) {
+            // Iterate over the ResultSet
+            while ( rs_two.next() ) {
 
 %>
-        <form action="report1.jsp" method="get" id = "form1">
-            <select>
-                <option id ='ssn'> <%= rs_two.getInt("s_ssn") %> </option>
-            </select>
-        </form>
+                <option id ='ssn'> <%= rs_two.getInt("s_ssn") %></option>
 <%
         }
 %>
 
-        <button type = "submit" form = "form1">
-            Click to see Grade Report
-        </button>    
+            </select>
+            <button type = "submit" form = "form1">
+                Click to see Grade Report
+            </button>
+        </form>    
+
+<!-- REPORT -->
+
+<%
+    // Iterate over the ResultSet
+    while (rs_three != null && rs_three.next() ) {
+%>
+
+    <tr>
+        <td>
+            <input value="<%= rs_three.getString("title") %>" 
+                name="title" size="10">
+        </td>
+        <!-- <td>
+            <input value="<%= rs_three.getString("first_name") %>" 
+                name="first_name" size="10">
+        </td> -->
+    </tr>
+<%
+        }
+%>
+
+<%
+    // Iterate over the ResultSet
+    while (rs_four != null && rs_four.next() ) {
+%>
+    <tr>
+        <td>
+            <input value="<%= rs_four.getInt("DECIMAL") %>" 
+                name="DECIMAL" size="10">
+        </td>
+    </tr>
+<%
+        }
+%>
 
 <%-- -------- Close Connection Code -------- --%>
 <%
