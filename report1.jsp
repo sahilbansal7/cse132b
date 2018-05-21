@@ -90,7 +90,7 @@
 %>
         <!-- <form action="report1.jsp" method="get"> -->
             <select>
-                <option value = <%= rs_two.getInt("s_ssn") %>> <%= rs_two.getInt("s_ssn") %> </option>
+                <option value = '<%= rs_two.getInt("s_ssn") %>'> <%= rs_two.getInt("s_ssn") %> </option>
             </select>
             <button onclick = "displayCourses()">
                 Click to see course information
