@@ -90,7 +90,7 @@
 %>
         <!-- <form action="report1.jsp" method="get"> -->
             <select>
-                <option> <%= rs_two.getInt("s_ssn") %> </option>
+                <option value = <%= rs_two.getInt("s_ssn") %>> <%= rs_two.getInt("s_ssn") %> </option>
             </select>
             <button onclick = "displayCourses()">
                 Click to see course information
@@ -123,11 +123,15 @@
 </td>
 </tr>
 </table>
+
+    <p id = "course">
+    </p>
 </body>
 
 <script type="text/javascript">
     function displayCourses() {
-        console.log("Hi");    
+        document.getElementById("course").innerHTML =
+            document.getElementById("course").value;
     }
 </script>
 
