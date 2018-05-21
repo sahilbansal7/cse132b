@@ -40,6 +40,7 @@
     <table border="1">
         <tr>
             <th>Course</th>
+            <th>Section ID</th>
             <th>Quarter</th>
             <th>Year</th>
         </tr>
@@ -58,43 +59,47 @@
         <input value="<%= rs_one.getString("title") %>" 
             name="title" size="10">
     </td>
-
     <td>
-        <input value="<%= rs_one.getString("quarter") %>" 
-            name="first_name" size="10">
+        <input value="<%= rs_one.getInt("section_id") %>" 
+            name="section_id" size="10">
     </td>
 
     <td>
-        <input value="<%= rs_one.getString("year") %>"
-            name="middle_name" size="15">
+        <input value="<%= rs_one.getString("quarter") %>" 
+            name="quarter" size="10">
+    </td>
+
+    <td>
+        <input value="<%= rs_one.getInt("year") %>"
+            name="year" size="15">
     </td>
 
     <!-- </form> -->
     </tr>
-    </table>
+    
 
 <%
         }
 %>
-
+</table>
 <%-- -------- Iteration Code -------- --%>
 <%
         // Iterate over the ResultSet
         while ( rs_two.next() ) {
 
 %>
-        <!-- <form action="report1.jsp" method="get"> -->
+        <form action="report1b.jsp" method="get" id = "form1">
             <select>
-                <option> <%= rs_two.getString("title") %> </option>
+                <option id ='ssn'> <%= rs_two.getInt("s_ssn") %> </option>
             </select>
-            <button onclick = "displayCourses()">
-                Click to see course information
-            </button>
-            <!-- <input type = "submit">
-        </form> -->
+        </form>
 <%
         }
 %>
+
+        <button type = "submit" form = "form1">
+            Click to see course information
+        </button>  
     
 
 <%-- -------- Close Connection Code -------- --%>
