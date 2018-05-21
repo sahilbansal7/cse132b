@@ -22,6 +22,7 @@
 
 %>
 
+
 <%-- -------- SELECT Statement Code -------- --%>
 <%
         // Create the statement
@@ -37,6 +38,18 @@
             ("SELECT * FROM student s, student_enrollment se WHERE se.s_ssn = s.s_ssn AND se.quarter = 'SPRING' AND se.year = '2018'");
 %>
 
+<%
+        String action = request.getParameter("action");
+        ResultSet rs_three = null;
+        if (action != null && action.equals("get")) {
+            int ssn = Integer.parseInt(request.getParameter("ssn"));
+            out.println(ssn);
+            Statement statement3 = conn.createStatement();
+            rs_three = statement3.executeQuery
+            ("SELECT * FROM student s");
+        }
+%>
+
     <table border="1">
         <tr>
             <th>SSN</th>
@@ -45,16 +58,12 @@
             <th>Last Name</th>
         </tr>
 
-<%-- -------- Iteration Code -------- --%>
+
 <%
-        // Iterate over the ResultSet
-
         while ( rs_one.next() ) {
-
 %>
 
     <tr>
-    <!-- <form action="report1.jsp" method="get"> -->
     <td>
         <input value="<%= rs_one.getInt("s_ssn") %>" 
             name="s_ssn" size="10">
@@ -74,32 +83,56 @@
         <input value="<%= rs_one.getString("last_name") %>" 
             name="last_name" size="15">
     </td>
-    <!-- </form> -->
     </tr>
-    </table>
+    
 
 <%
         }
 %>
+    </table>
+
 
 <%-- -------- Iteration Code -------- --%>
+        <form action="report1.jsp" method="get">
+        <input type="hidden" value="get" name="action">
+        <select name="ssn">
 <%
         // Iterate over the ResultSet
         while ( rs_two.next() ) {
 
 %>
-        <form action="report1.jsp" method="get" id = "form1">
-            <select>
-                <option id ='ssn'> <%= rs_two.getInt("s_ssn") %> </option>
-            </select>
-        </form>
+
+            <option id ='ssn'> <%= rs_two.getInt("s_ssn") %> </option>
 <%
         }
 %>
+        </select>
+        <button type="submit" value="submit"> Do It </button>
+        </form>
 
-        <button type = "submit" form = "form1">
-            Click to see course information
-        </button>    
+
+<!-- REPORT -->
+
+<%
+        // Iterate over the ResultSet
+        while (rs_three != null && rs_three.next() ) {
+
+%>
+
+        <tr>
+                <td>
+                    <input value="<%= rs_three.getInt("s_ssn") %>" 
+                        name="s_ssn" size="10">
+                </td>
+
+                <td>
+                    <input value="<%= rs_three.getString("first_name") %>" 
+                        name="first_name" size="10">
+                </td>
+        </tr>
+<%
+        }
+%>
 
 <%-- -------- Close Connection Code -------- --%>
 <%
