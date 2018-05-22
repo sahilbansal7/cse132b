@@ -46,7 +46,7 @@
             String str_ssn = Integer.toString(ssn);
             Statement statement3 = conn.createStatement();
             rs_three = statement3.executeQuery
-            ("SELECT * FROM student s WHERE s.s_ssn = " + str_ssn + "");
+            ("SELECT c.*, ce.units, ce.section_id FROM class c, course_enrollment ce, student s WHERE s.s_ssn = " + str_ssn + " AND ce.s_ssn = s.s_ssn AND ce.section_id = c.section_id AND ce.co_number = c.co_number");
         }
 %>
 
