@@ -43,11 +43,11 @@
         ResultSet rs_four = null;
         if (action != null && action.equals("get")) {
             int ssn = Integer.parseInt(request.getParameter("ssn"));
-            out.println(ssn);
+            String str_ssn = Integer.toString(ssn);
             Statement statement3 = conn.createStatement();
             Statement statement4 = conn.createStatement();
-            rs_three = statement3.executeQuery("SELECT * FROM class where EXISTS (SELECT ct.section_id FROM classes_taken ct WHERE ssn = ct.s_ssn) GROUPBY quarter, year");
-            rs_four = statement4s.executeQuery ("SELECT AVG(gcv.DECIMAL) FROM past_classes pc, grade_conversion_table gdc WHERE grade != 'IN' AND pc.grade = gdc.LETTER_GRADE GROUPBY quarter, year");
+            rs_three = statement3.executeQuery("SELECT * FROM class where EXISTS (SELECT ct.section_id FROM classes_taken ct WHERE "+ str_ssn + " = ct.s_ssn) GROUPBY quarter, year");
+            rs_four = statement4s.executeQuery ("SELECT AVG(gcv.DECIMAL) FROM student s, past_classes pc, grade_conversion_table gdc WHERE s.s_ssn = pc.s_ssn AND s.s_ssn = " + str_ssn + " AND grade != 'IN' AND pc.grade = gdc.LETTER_GRADE GROUPBY quarter, year");
         }
 %>
 
