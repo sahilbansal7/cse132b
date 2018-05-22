@@ -59,7 +59,7 @@ if (action != null && action.equals("get")) {
 }
 
 // Second HTML SELECT Prompt
-String action = request.getParameter("action2");
+String action2 = request.getParameter("action2");
 ResultSet rs_five = null;
 if (action2 != null && action.equals("get")) {
     int ssn = Integer.parseInt(request.getParameter("ssn"));
