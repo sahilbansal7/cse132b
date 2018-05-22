@@ -27,7 +27,6 @@ Connection conn = DriverManager.getConnection(dbURL);
 // Create the statement
 Statement statement1 = conn.createStatement();
 Statement statement2 = conn.createStatement();
-Statement statement3 = conn.createStatement();
 
 /*
     Display all students who are enrolled in the current quarter
@@ -38,36 +37,28 @@ Statement statement3 = conn.createStatement();
         Update degrees to correctly indicate undergraduate, bs, ms, etc
 */
 ResultSet rs_one = statement1.executeQuery
-    ("SELECT * FROM student WHERE enrolled = '1' AND degrees = 'hs'");
+    ("SELECT * FROM student s, student_bs sb, student_enrollment se WHERE se.s_ssn = s.s_ssn AND se.quarter = 'SPRING' AND se.year = '2018' AND sb.s_ssn = s.s_ssn");
 ResultSet rs_two = statement2.executeQuery
-    ("SELECT * FROM student WHERE degrees = 'hs'");
-ResultSet rs_three = statement3.executeQuery
-    ("SELECT d_department, d_degree_name FROM degree");
+    ("SELECT d_department FROM degree WHERE d_degree_name = 'bs'");
 %>
 
 <%
 // First HTML SELECT Prompt
 String action = request.getParameter("action");
+ResultSet rs_three = null;
 ResultSet rs_four = null;
-if (action != null && action.equals("get")) {
-    int ssn = Integer.parseInt(request.getParameter("ssn"));
-    String str_ssn = Integer.toString(ssn);
-    String degree = request.getParameter("d_department");
-    Statement statement4 = conn.createStatement();
-    rs_four = statement4.executeQuery
-    ("SELECT d.total_units - SUM(c.units) AS Remaining FROM degree d, student s, past_classes pc, course_enrollment ce, course c WHERE d.d_department = '" + degree + "' AND s.s_ssn = " + str_ssn + " AND pc.s_ssn = s.s_ssn AND pc.grade != 'F' AND ce.co_number = pc.co_number AND c.co_number = pc.co_number");
-}
+    if (action != null && action.equals("get")) {
+        int ssn = Integer.parseInt(request.getParameter("ssn"));
+        String str_ssn = Integer.toString(ssn);
+        String degree = request.getParameter("d_department");
+        Statement statement3 = conn.createStatement();
+        rs_three = statement3.executeQuery
+        ("SELECT d.total_units - SUM(c.units) AS Remaining FROM degree d, student s, past_classes pc, course_enrollment ce, course c WHERE d.d_department = '" + degree + "' AND s.s_ssn = " + str_ssn + " AND pc.s_ssn = s.s_ssn AND pc.grade != 'F' AND ce.co_number = pc.co_number AND c.co_number = pc.co_number");
 
-// Second HTML SELECT Prompt
-String action = request.getParameter("action2");
-ResultSet rs_five = null;
-if (action2 != null && action.equals("get")) {
-    int ssn = Integer.parseInt(request.getParameter("ssn"));
-    String str_ssn = Integer.toString(ssn);
-    String degree = request.getParameter("d_department");
-    Statement statement5 = conn.createStatement();
-    rs_five = statement5.executeQuery 
-    ("SELECT min_lower - SUM(c.units), min_upper - SUM(cc.units), min_tech_elective - SUM(ccc.units) FROM student s, degree d, course c, past_classes pc, course cc, past_classes ppc, course ccc, past_classes pppc WHERE s.s_ssn = " + str_ssn + " AND s.degrees = '" + degree + "' AND pc.co_number = c.co_number AND pc.grade != 'F' AND c.category = 'lower' AND cc.co_number = ppc.co_number AND ppc.grade != 'F' AND cc.category = 'upper' AND ccc.co_number = pppc.co_number AND pppc.grade != 'F' AND ccc.category = 'tech_elective'");
+        Statement statement4 = conn.createStatement();
+        rs_four = statement4.executeQuery 
+        ("SELECT min_lower - SUM(c.units), min_upper - SUM(cc.units), min_tech_elective - SUM(ccc.units) FROM student s, degree d, course c, past_classes pc, course cc, past_classes ppc, course ccc, past_classes pppc WHERE s.s_ssn = " + str_ssn + " AND s.degrees = '" + degree + "' AND pc.co_number = c.co_number AND pc.grade != 'F' AND c.category = 'lower' AND cc.co_number = ppc.co_number AND ppc.grade != 'F' AND cc.category = 'upper' AND ccc.co_number = pppc.co_number AND pppc.grade != 'F' AND ccc.category = 'tech_elective'");
+    }
 }
 %>
 
