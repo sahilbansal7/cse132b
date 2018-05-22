@@ -95,13 +95,12 @@
     </table>
 
 <%-- -------- Iteration Code -------- --%>
-        <form action="report1.jsp" method="get">
+        <form action="report1c.jsp" method="get">
             <input type="hidden" value="get" name="action">
             <select name="ssn">
 <%
             // Iterate over the ResultSet
             while ( rs_two.next() ) {
-
 %>
                 <option id ='ssn'> <%= rs_two.getInt("s_ssn") %></option>
 <%
@@ -109,7 +108,7 @@
 %>
 
             </select>
-            <button type = "submit" form = "form1">
+            <button type = "submit" value = "submit">
                 Click to see Grade Report
             </button>
         </form>    
@@ -126,6 +125,10 @@
             <input value="<%= rs_three.getString("title") %>" 
                 name="title" size="10">
         </td>
+        <!-- 
+            TODO :
+                Grade & Units
+         -->
         <!-- <td>
             <input value="<%= rs_three.getString("first_name") %>" 
                 name="first_name" size="10">
