@@ -44,16 +44,16 @@ ResultSet rs_two = statement2.executeQuery
 
 <%
 // First HTML SELECT Prompt
-String action = request.getParameter("action");
-ResultSet rs_three = null;
-ResultSet rs_four = null;
+    String action = request.getParameter("action");
+    ResultSet rs_three = null;
+    ResultSet rs_four = null;
     if (action != null && action.equals("get")) {
         int ssn = Integer.parseInt(request.getParameter("ssn"));
         String str_ssn = Integer.toString(ssn);
         String degree = request.getParameter("d_department");
         Statement statement3 = conn.createStatement();
         rs_three = statement3.executeQuery
-        ("SELECT d.total_units - SUM(c.units) AS Remaining FROM degree d, student s, past_classes pc, course_enrollment ce, course c WHERE d.d_department = '" + degree + "' AND s.s_ssn = " + str_ssn + " AND pc.s_ssn = s.s_ssn AND pc.grade != 'F' AND ce.co_number = pc.co_number AND c.co_number = pc.co_number");
+        ("SELECT d.total_units - SUM(c.units) AS Remaining FROM degree d, student s, past_classes pc, course c WHERE d.d_department = '" + degree + "' AND s.s_ssn = " + str_ssn + " AND pc.s_ssn = s.s_ssn AND pc.grade != 'F' AND c.co_number = pc.co_number");
 
         Statement statement4 = conn.createStatement();
         rs_four = statement4.executeQuery 
