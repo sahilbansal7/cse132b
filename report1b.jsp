@@ -37,6 +37,20 @@
             ("SELECT * FROM class");
 %>
 
+<%
+        String action = request.getParameter("action");
+        ResultSet rs_three = null;
+        if (action != null && action.equals("get")) {
+            String title = request.getParameter("title");
+            Statement statement3 = conn.createStatement();
+            String query = "SELECT DISTINCT(s.*), c.units, c.grade_option FROM student s, course c, class cs, course_enrollment ce WHERE cs.title = '" + title + "' AND cs.co_number = c.co_number AND ce.co_number = cs.co_number AND ce.s_ssn = s.s_ssn";
+            rs_three = statement3.executeQuery
+            (query);
+
+            
+        }
+%>
+
     <table border="1">
         <tr>
             <th>Course</th>
@@ -83,24 +97,114 @@
 %>
 </table>
 <%-- -------- Iteration Code -------- --%>
+        <form action="report1b.jsp" method="get">
+        <input type="hidden" value="get" name="action">
+        <select name="title">
 <%
         // Iterate over the ResultSet
         while ( rs_two.next() ) {
 
 %>
-        <form action="report1b.jsp" method="get" id = "form1">
-            <select>
-                <option id ='ssn'> <%= rs_two.getInt("s_ssn") %> </option>
-            </select>
-        </form>
+
+            <option id ='title'> <%= rs_two.getString("title") %> </option>
 <%
         }
 %>
-
-        <button type = "submit" form = "form1">
-            Click to see course information
-        </button>  
+        </select>
+        <button type="submit" value="submit"> Do It </button>
+        </form>
     
+
+
+
+
+
+
+<!-- REPORT -->
+<table border="1">
+        <tr>
+            <th>title</th>
+            <th>section_id</th>
+            <th>le</th>
+            <th>di</th>
+            <th>enroll_limit</th>
+            <th>di_mandatory</th>
+            <th>f_name</th>
+            <th>co_number</th>
+            <th>review_session</th>
+            <th>waitlist</th>
+            <th>quarter</th>
+            <th>year</th>
+            <th>units</th>
+        </tr>
+
+<%
+        // Iterate over the ResultSet
+        while (rs_three != null && rs_three.next() ) {
+
+%>
+
+        <tr>
+                <td>
+                    <input value="<%= rs_three.getInt("s_ssn") %>" 
+                        name="s_ssn" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("first_name") %>" 
+                        name="first_name" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("middle_name") %>" 
+                        name="middle_name" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("last_name") %>" 
+                        name="last_name" size="10">
+                </td>
+
+                <td>
+                    <input value="<%= rs_three.getString("period_of_attendance") %>" 
+                        name="period_of_attendance" size="10">
+                </td>
+
+                <td>
+                    <input value="<%= rs_three.getInt("enrolled") %>" 
+                        name="enrolled" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("degrees") %>" 
+                        name="degrees" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getInt("california") %>" 
+                        name="california" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getInt("foreigner") %>" 
+                        name="foreigner" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getInt("non_ca") %>" 
+                        name="non_ca" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("student_id") %>" 
+                        name="student_id" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getInt("units") %>" 
+                        name="units" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("grade_option") %>" 
+                        name="grade_option" size="10">
+                </td>
+
+        </tr>
+<%
+        }
+%>
+</table>
 
 <%-- -------- Close Connection Code -------- --%>
 <%
@@ -125,10 +229,5 @@
 </table>
 </body>
 
-<script type="text/javascript">
-    function displayCourses() {
-        console.log("Hi");    
-    }
-</script>
 
 </html>
