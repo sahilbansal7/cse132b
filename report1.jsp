@@ -45,7 +45,7 @@
             int ssn = Integer.parseInt(request.getParameter("ssn"));
             Statement statement3 = conn.createStatement();
             rs_three = statement3.executeQuery
-            ("SELECT * FROM student s");
+            ("SELECT * FROM student s WHERE s.s_ssn = " + ssn "");
         }
 %>
 
