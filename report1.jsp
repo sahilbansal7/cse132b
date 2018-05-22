@@ -43,9 +43,10 @@
         ResultSet rs_three = null;
         if (action != null && action.equals("get")) {
             int ssn = Integer.parseInt(request.getParameter("ssn"));
+            String str_ssn = Integer.toString(ssn);
             Statement statement3 = conn.createStatement();
             rs_three = statement3.executeQuery
-            ("SELECT * FROM student s WHERE s.s_ssn = " + ssn "");
+            ("SELECT * FROM student s WHERE s.s_ssn = " + str_ssn + "");
         }
 %>
 
