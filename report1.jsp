@@ -43,7 +43,6 @@
         ResultSet rs_three = null;
         if (action != null && action.equals("get")) {
             int ssn = Integer.parseInt(request.getParameter("ssn"));
-            out.println(ssn);
             Statement statement3 = conn.createStatement();
             rs_three = statement3.executeQuery
             ("SELECT * FROM student s");
