@@ -32,15 +32,25 @@
             Display all students who are enrolled in the current quarter
         */
         ResultSet rs_one = statement1.executeQuery
-            ("SELECT * FROM class");
+            ("SELECT c.title, c.quarter, c.year FROM class c");
         ResultSet rs_two = statement2.executeQuery
-            ("SELECT * FROM class");
+            ("SELECT c.title, c.quarter, c.year FROM class c");
+%>
+
+<%
+        String action = request.getParameter("action");
+        ResultSet rs_three = null;
+        if (action != null && action.equals("get")) {
+            String title = request.getParaneter("title")l
+            Statement statement3 = conn.createStatement();
+            rs_three = statement3.executeQuery
+            ("SELECT s.*, c.units, cs.grading_option FROM student s, cource c, class cs, course_enrollment ce WHERE cs.title = " + title + " AND cs.co_number = c.co_number AND ce.co_number = cs.co_number AND ce.s_ssn = s.s_ssn");
+        }
 %>
 
     <table border="1">
         <tr>
             <th>Course</th>
-            <th>Section ID</th>
             <th>Quarter</th>
             <th>Year</th>
         </tr>
@@ -59,11 +69,6 @@
         <input value="<%= rs_one.getString("title") %>" 
             name="title" size="10">
     </td>
-    <td>
-        <input value="<%= rs_one.getInt("section_id") %>" 
-            name="section_id" size="10">
-    </td>
-
     <td>
         <input value="<%= rs_one.getString("quarter") %>" 
             name="quarter" size="10">
