@@ -41,13 +41,16 @@
         String action = request.getParameter("action");
         ResultSet rs_three = null;
         ResultSet rs_four = null;
+        ResultSet rs_five = null;
         if (action != null && action.equals("get")) {
             int ssn = Integer.parseInt(request.getParameter("ssn"));
             String str_ssn = Integer.toString(ssn);
             Statement statement3 = conn.createStatement();
             Statement statement4 = conn.createStatement();
-            rs_three = statement3.executeQuery("SELECT * FROM class where EXISTS (SELECT ct.section_id FROM classes_taken ct WHERE "+ str_ssn + " = ct.s_ssn) GROUPBY quarter, year");
-            rs_four = statement4s.executeQuery ("SELECT AVG(gcv.DECIMAL) FROM student s, past_classes pc, grade_conversion_table gdc WHERE s.s_ssn = pc.s_ssn AND s.s_ssn = " + str_ssn + " AND grade != 'IN' AND pc.grade = gdc.LETTER_GRADE GROUPBY quarter, year");
+            Statement statement5 = conn.createStatement();
+            rs_three = statement3.executeQuery("SELECT c.*, pc.grade, cs.units FROM class c, course cs, past_classes pc WHERE " +str_ssn + " = pc.s_ssn AND c.section_id = pc.section_id AND c.co_number = pc.co_number AND c.co_number = cs.co_number ORDER BY c.quarter, c.year DESC");
+            rs_four = statement4.executeQuery ("SELECT ROUND(AVG(gdc.number_grade)) FROM student s, past_classes pc, grade_conversion gdc WHERE s.s_ssn = pc.s_ssn AND s.s_ssn = " + str_ssn + " AND pc.grade != 'IN' AND pc.grade = gdc.LETTER_GRADE");
+            rs_five = statement5.executeQuery("SELECT ROUND(AVG(gdc.number_grade)), pc.quarter, pc.year FROM student s, past_classes pc, grade_conversion gdc WHERE s.s_ssn = pc.s_ssn AND s.s_ssn = " + str_ssn + " AND grade != 'IN' AND pc.grade = gdc.LETTER_GRADE GROUP BY quarter, year");
         }
 %>
 
@@ -114,7 +117,23 @@
         </form>    
 
 <!-- REPORT -->
-
+<table border="1">
+        <tr>
+            <th>title</th>
+            <th>section_id</th>
+            <th>le</th>
+            <th>di</th>
+            <th>enroll_limit</th>
+            <th>di_mandatory</th>
+            <th>f_name</th>
+            <th>co_number</th>
+            <th>review_session</th>
+            <th>waitlist</th>
+            <th>quarter</th>
+            <th>year</th>
+            <th>grade</th>
+            <th>units</th>
+        </tr>
 <%
     // Iterate over the ResultSet
     while (rs_three != null && rs_three.next() ) {
@@ -125,32 +144,114 @@
             <input value="<%= rs_three.getString("title") %>" 
                 name="title" size="10">
         </td>
-        <!-- 
-            TODO :
-                Grade & Units
-         -->
-        <!-- <td>
-            <input value="<%= rs_three.getString("first_name") %>" 
-                name="first_name" size="10">
-        </td> -->
+                <td>
+                    <input value="<%= rs_three.getInt("section_id") %>" 
+                        name="section_id" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("le") %>" 
+                        name="le" size="10">
+                </td>
+
+                <td>
+                    <input value="<%= rs_three.getString("di") %>" 
+                        name="di" size="10">
+                </td>
+
+                <td>
+                    <input value="<%= rs_three.getInt("enroll_limit") %>" 
+                        name="enroll_limit" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getInt("di_mandatory") %>" 
+                        name="di_mandatory" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("f_name") %>" 
+                        name="f_name" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("co_number") %>" 
+                        name="co_number" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("review_session") %>" 
+                        name="review_session" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getInt("waitlist") %>" 
+                        name="waitlist" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("quarter") %>" 
+                        name="quarter" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getInt("year") %>" 
+                        name="year" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("grade") %>" 
+                        name="grade" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getInt("units") %>" 
+                        name="units" size="10">
+                </td>
+
     </tr>
 <%
         }
 %>
+</table>
 
+<table border="1">
+        <tr>
+            <th>Cumulative GPA</th>
+        </tr>
 <%
     // Iterate over the ResultSet
     while (rs_four != null && rs_four.next() ) {
 %>
     <tr>
         <td>
-            <input value="<%= rs_four.getInt("DECIMAL") %>" 
-                name="DECIMAL" size="10">
+            <input value="<%= rs_four.getInt("round") %>" 
+                name="round" size="10">
         </td>
     </tr>
 <%
         }
 %>
+</table>
+
+<table border="1">
+        <tr>
+            <th>Quarterly GPA</th>
+            <th>quarter</th>
+            <th>year</th>
+        </tr>
+<%
+    // Iterate over the ResultSet
+    while (rs_five != null && rs_five.next() ) {
+%>
+    <tr>
+        <td>
+            <input value="<%= rs_five.getInt("round") %>" 
+                name="round" size="10">
+        </td>
+        <td>
+            <input value="<%= rs_five.getString("quarter") %>" 
+                name="quarter" size="10">
+        </td>
+        <td>
+            <input value="<%= rs_five.getInt("year") %>" 
+                name="year" size="10">
+        </td>
+    </tr>
+<%
+        }
+%>
+</table>
 
 <%-- -------- Close Connection Code -------- --%>
 <%
