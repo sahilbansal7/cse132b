@@ -43,35 +43,22 @@ ResultSet rs_two = statement2.executeQuery
 %>
 
 <%
-// First HTML SELECT Prompt
-String action = request.getParameter("action");
-ResultSet rs_three = null;
-ResultSet rs_four = null;
-if (action != null && action.equals("get")) {
-    int ssn = Integer.parseInt(request.getParameter("ssn"));
-    String str_ssn = Integer.toString(ssn);
-    String degree = request.getParameter("degree");
-    // Completed Concentrations
-    Statement statement3 = conn.createStatement();
-    rs_three = statement3.executeQuery
-    ("SELECT c.title FROM student s, class c, course cs, concentration ct, past_classes pc, student_ms sms, grade_conversion gc, grade_conversion ggc WHERE s.s_ssn = " + str_ssn + " AND ct.degree = '" + degree + "' AND sms.degree = ct.ms AND cs.co_number = c.co_number AND pc.section_id = c.section_id AND ct.co_number = pc.co_number AND pc.grade = gc.LETTER_GRADE AND ct.min_gpa = ggc.LETTER_GRADE AND gc.number_grade > ggc.number_grade HAVING SUM(cs.units) > ct.min_num_units");
+    String action = request.getParameter("action");
+    ResultSet rs_three = null;
+    ResultSet rs_four = null;
+    if (action != null && action.equals("get")) {
+        int ssn = Integer.parseInt(request.getParameter("ssn"));
+        String str_ssn = Integer.toString(ssn);
+        String degree = request.getParameter("degree");
+        // Completed Concentrations
+        Statement statement3 = conn.createStatement();
+        rs_three = statement3.executeQuery
+        ("SELECT c.title FROM student s, class c, course cs, concentration ct, past_classes pc, student_ms sms, grade_conversion gc, grade_conversion ggc WHERE s.s_ssn = " + str_ssn + " AND ct.degree = '" + degree + "' AND sms.degree = ct.ms AND cs.co_number = c.co_number AND pc.section_id = c.section_id AND ct.co_number = pc.co_number AND pc.grade = gc.LETTER_GRADE AND ct.min_gpa = ggc.LETTER_GRADE AND gc.number_grade > ggc.number_grade HAVING SUM(cs.units) > ct.min_num_units");
 
-    Statement statement4 = conn.createSteatment();
-    rs_four = statement4.exectueQuery
-    ("SELECT ct.co_number, (c.quarter, c.year) AS Offered FROM concentration ct, student s, class c WHERE s.s_ssn = " + str_ssn + " AND ct.degree = '" + degree + "' AND c.year > 2015 AND c.co_number = ct.co_number AND NOT IN (SELECT pc.co_number FROM past_classes pc WHERE pc.s_ssn = s.s_ssn AND pc.co_number = ct.co_number) GROUPBY ct.concentration");
-}
-/*
-// Second HTML SELECT Prompt
-String action = request.getParameter("action2");
-ResultSet rs_five = null;
-if (action2 != null && action.equals("get")) {
-    int ssn = Integer.parseInt(request.getParameter("ssn"));
-    String str_ssn = Integer.toString(ssn);
-    String degree = request.getParameter("d_department");
-    Statement statement5 = conn.createStatement();
-    rs_five = statement5.executeQuery 
-    ("SELECT min_lower - SUM(c.units) FROM student s, degree d, course c, past_classes pc WHERE s.s_ssn = " + str_ssn + " AND s.degrees = '" + degree + "' AND pc.co_number = c.co_number AND pc.grade != 'F' AND c.category = 'lower'");
-}*/
+        Statement statement4 = conn.createSteatment();
+        rs_four = statement4.exectueQuery
+        ("SELECT ct.co_number, (c.quarter, c.year) AS Offered FROM concentration ct, student s, class c WHERE s.s_ssn = " + str_ssn + " AND ct.degree = '" + degree + "' AND c.year > 2015 AND c.co_number = ct.co_number AND NOT IN (SELECT pc.co_number FROM past_classes pc WHERE pc.s_ssn = s.s_ssn AND pc.co_number = ct.co_number) GROUPBY ct.concentration");
+    }
 %>
 
 <table border="1">
