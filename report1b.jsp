@@ -34,7 +34,7 @@
         ResultSet rs_one = statement1.executeQuery
             ("SELECT * FROM class");
         ResultSet rs_two = statement2.executeQuery
-            ("SELECT * FROM class");
+            ("SELECT DISTINCT(title) FROM class");
 %>
 
 <%
@@ -123,19 +123,19 @@
 <!-- REPORT -->
 <table border="1">
         <tr>
-            <th>title</th>
-            <th>section_id</th>
-            <th>le</th>
-            <th>di</th>
-            <th>enroll_limit</th>
-            <th>di_mandatory</th>
-            <th>f_name</th>
-            <th>co_number</th>
-            <th>review_session</th>
-            <th>waitlist</th>
-            <th>quarter</th>
-            <th>year</th>
+            <th>s_ssn</th>
+            <th>first_name</th>
+            <th>middle_name</th>
+            <th>last_name</th>
+            <th>period_of_attendance</th>
+            <th>enrolled</th>
+            <th>degrees</th>
+            <th>california</th>
+            <th>foreigner</th>
+            <th>non_ca</th>
+            <th>student_id</th>
             <th>units</th>
+            <th>grade_option</th>
         </tr>
 
 <%
