@@ -45,8 +45,11 @@
             int ssn = Integer.parseInt(request.getParameter("ssn"));
             String str_ssn = Integer.toString(ssn);
             Statement statement3 = conn.createStatement();
+            String query = "SELECT c.*, ce.units FROM class c, course_enrollment ce, student s WHERE s.s_ssn = " + str_ssn + " AND ce.s_ssn = s.s_ssn AND ce.section_id = c.section_id AND ce.co_number = c.co_number";
             rs_three = statement3.executeQuery
-            ("SELECT c.*, ce.units, ce.section_id FROM class c, course_enrollment ce, student s WHERE s.s_ssn = " + str_ssn + " AND ce.s_ssn = s.s_ssn AND ce.section_id = c.section_id AND ce.co_number = c.co_number");
+            (query);
+
+            
         }
 %>
 
@@ -112,6 +115,22 @@
 
 
 <!-- REPORT -->
+<table border="1">
+        <tr>
+            <th>title</th>
+            <th>section_id</th>
+            <th>le</th>
+            <th>di</th>
+            <th>enroll_limit</th>
+            <th>di_mandatory</th>
+            <th>f_name</th>
+            <th>co_number</th>
+            <th>review_session</th>
+            <th>waitlist</th>
+            <th>quarter</th>
+            <th>year</th>
+            <th>units</th>
+        </tr>
 
 <%
         // Iterate over the ResultSet
@@ -121,18 +140,66 @@
 
         <tr>
                 <td>
-                    <input value="<%= rs_three.getInt("s_ssn") %>" 
-                        name="s_ssn" size="10">
+                    <input value="<%= rs_three.getString("title") %>" 
+                        name="title" size="10">
                 </td>
 
                 <td>
-                    <input value="<%= rs_three.getString("first_name") %>" 
-                        name="first_name" size="10">
+                    <input value="<%= rs_three.getInt("section_id") %>" 
+                        name="section_id" size="10">
                 </td>
+                <td>
+                    <input value="<%= rs_three.getString("le") %>" 
+                        name="le" size="10">
+                </td>
+
+                <td>
+                    <input value="<%= rs_three.getString("di") %>" 
+                        name="di" size="10">
+                </td>
+
+                <td>
+                    <input value="<%= rs_three.getInt("enroll_limit") %>" 
+                        name="enroll_limit" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getInt("di_mandatory") %>" 
+                        name="di_mandatory" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("f_name") %>" 
+                        name="f_name" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("co_number") %>" 
+                        name="co_number" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("review_session") %>" 
+                        name="review_session" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getInt("waitlist") %>" 
+                        name="waitlist" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("quarter") %>" 
+                        name="quarter" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getInt("year") %>" 
+                        name="year" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getInt("units") %>" 
+                        name="units" size="10">
+                </td>
+
         </tr>
 <%
         }
 %>
+</table>
 
 <%-- -------- Close Connection Code -------- --%>
 <%
