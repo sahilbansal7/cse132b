@@ -39,9 +39,9 @@ Statement statement4 = conn.createStatement();
         Update degrees to correctly indicate undergraduate, bs, ms, etc
 */
 ResultSet rs_one = statement1.executeQuery
-    ("SELECT * FROM student s, student_bs sb, student_enrollment se WHERE se.s_ssn = s.s_ssn AND se.quarter = 'SPRING' AND se.year = '2018' AND sb.s_ssn = s.s_ssn");
+    ("SELECT * FROM student s, student_bs sb, student_enrollment se WHERE se.s_ssn = s.s_ssn AND se.quarter = 'Spring' AND se.year = '2018' AND sb.s_ssn = s.s_ssn");
 ResultSet rs_two = statement2.executeQuery
-    ("SELECT * FROM student s, student_bs sb, student_enrollment se WHERE se.s_ssn = s.s_ssn AND se.quarter = 'SPRING' AND se.year = '2018' AND sb.s_ssn = s.s_ssn");
+    ("SELECT * FROM student s, student_bs sb, student_enrollment se WHERE se.s_ssn = s.s_ssn AND se.quarter = 'Spring' AND se.year = '2018' AND sb.s_ssn = s.s_ssn");
 ResultSet rs_three = statement3.executeQuery
     ("SELECT d_department, d_degree_name FROM degree WHERE d_degree_name = 'bs' OR d_degree_name = 'ba'");
 ResultSet rs_four = statement4.executeQuery
