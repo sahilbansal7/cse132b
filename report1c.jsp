@@ -48,7 +48,9 @@
             Statement statement3 = conn.createStatement();
             Statement statement4 = conn.createStatement();
             Statement statement5 = conn.createStatement();
-            rs_three = statement3.executeQuery("SELECT DISTINCT(c.*), pc.grade, cs.units FROM class c, course cs, past_classes pc WHERE " +str_ssn + " = pc.s_ssn AND c.section_id = pc.section_id AND c.co_number = pc.co_number AND c.co_number = cs.co_number ORDER BY c.quarter, c.year DESC");
+            String query3 = "SELECT DISTINCT(c.*), pc.grade, cs.units FROM class c, course cs, past_classes pc WHERE " +str_ssn + " = pc.s_ssn AND c.section_id = pc.section_id AND c.co_number = pc.co_number AND c.co_number = cs.co_number ORDER BY c.quarter, c.year DESC";
+            out.println(query3);
+            rs_three = statement3.executeQuery(query3);
             rs_four = statement4.executeQuery ("SELECT ROUND(AVG(gdc.number_grade)) FROM student s, past_classes pc, grade_conversion gdc WHERE s.s_ssn = pc.s_ssn AND s.s_ssn = " + str_ssn + " AND pc.grade != 'IN' AND pc.grade = gdc.LETTER_GRADE");
             rs_five = statement5.executeQuery("SELECT ROUND(AVG(gdc.number_grade)), pc.quarter, pc.year FROM student s, past_classes pc, grade_conversion gdc WHERE s.s_ssn = pc.s_ssn AND s.s_ssn = " + str_ssn + " AND grade != 'IN' AND pc.grade = gdc.LETTER_GRADE GROUP BY quarter, year");
         }
@@ -121,7 +123,7 @@
         <tr>
             <th>title</th>
             <th>section_id</th>
-            <th>le</th>
+            <th>le_day</th>
             <th>di</th>
             <th>enroll_limit</th>
             <th>di_mandatory</th>
@@ -131,6 +133,8 @@
             <th>waitlist</th>
             <th>quarter</th>
             <th>year</th>
+            <th>le_time</th>
+            <th>le_ampm</th>
             <th>grade</th>
             <th>units</th>
         </tr>
@@ -149,8 +153,8 @@
                         name="section_id" size="10">
                 </td>
                 <td>
-                    <input value="<%= rs_three.getString("le") %>" 
-                        name="le" size="10">
+                    <input value="<%= rs_three.getString("le_day") %>" 
+                        name="le_day" size="10">
                 </td>
 
                 <td>
@@ -189,6 +193,14 @@
                 <td>
                     <input value="<%= rs_three.getInt("year") %>" 
                         name="year" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("le_time") %>" 
+                        name="le_time" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("le_ampm") %>" 
+                        name="le_ampm" size="10">
                 </td>
                 <td>
                     <input value="<%= rs_three.getString("grade") %>" 

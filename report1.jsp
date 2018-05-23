@@ -46,6 +46,7 @@
             String str_ssn = Integer.toString(ssn);
             Statement statement3 = conn.createStatement();
             String query = "SELECT c.*, ce.units FROM class c, course_enrollment ce, student s WHERE s.s_ssn = " + str_ssn + " AND ce.s_ssn = s.s_ssn AND ce.section_id = c.section_id AND ce.co_number = c.co_number";
+            out.println(query);
             rs_three = statement3.executeQuery
             (query);
 
@@ -119,7 +120,7 @@
         <tr>
             <th>title</th>
             <th>section_id</th>
-            <th>le</th>
+            <th>le_day</th>
             <th>di</th>
             <th>enroll_limit</th>
             <th>di_mandatory</th>
@@ -129,6 +130,8 @@
             <th>waitlist</th>
             <th>quarter</th>
             <th>year</th>
+            <th>le_time</th>
+            <th>le_ampm</th>
             <th>units</th>
         </tr>
 
@@ -149,8 +152,8 @@
                         name="section_id" size="10">
                 </td>
                 <td>
-                    <input value="<%= rs_three.getString("le") %>" 
-                        name="le" size="10">
+                    <input value="<%= rs_three.getString("le_day") %>" 
+                        name="le_day" size="10">
                 </td>
 
                 <td>
@@ -189,6 +192,14 @@
                 <td>
                     <input value="<%= rs_three.getInt("year") %>" 
                         name="year" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("le_time") %>" 
+                        name="le_time" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("le_ampm") %>" 
+                        name="le_ampm" size="10">
                 </td>
                 <td>
                     <input value="<%= rs_three.getInt("units") %>" 
