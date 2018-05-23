@@ -48,7 +48,7 @@
             String hour = ("interval '1 hour'");
             // Account for only the lecture time
             rs_three = statement3.executeQuery
-            ("SELECT not_enrolled.title, cc.* FROM student s, class enrolled, class not_enrolled, course c, course_enrollment ce WHERE s.s_ssn = " + str_ssn + " AND s.s_ssn = ce.s_ssn AND enrolled.co_number = ce.co_number AND enrolled.section_id = ce.section_id AND ce.co_number = c.co_number AND enrolled.co_number != not_enrolled.co_number AND enrolled.day = not_enrolled.day AND (enrolled.le_time = not_enrolled.le_time OR not_enrolled.le_time > enrolled.le_time AND not_enrolled.le_time < (enrolled.le_time + " + hour + ") OR (not_enrolled.le_time + " + hour + ") > enrolled.le_time AND (not_enrolled.le_time + " + hour + ") < (enrolled.le_time + " + hour + "))");
+            ("SELECT not_enrolled.title, not_enrolled.co_number, enrolled.title, enrolled.co_number FROM student s, class enrolled, class not_enrolled, course c, course_enrollment ce WHERE s.s_ssn = " + str_ssn + " AND s.s_ssn = ce.s_ssn AND enrolled.co_number = ce.co_number AND enrolled.section_id = ce.section_id AND ce.co_number = c.co_number AND enrolled.co_number != not_enrolled.co_number AND enrolled.day = not_enrolled.day AND (enrolled.le_time = not_enrolled.le_time OR not_enrolled.le_time > enrolled.le_time AND not_enrolled.le_time < (enrolled.le_time + " + hour + ") OR (not_enrolled.le_time + " + hour + ") > enrolled.le_time AND (not_enrolled.le_time + " + hour + ") < (enrolled.le_time + " + hour + "))");
         }
 %>
 
@@ -59,7 +59,6 @@
             <th>Middle Name (Optional)</th>
             <th>Last Name</th>
         </tr>
-
 
 <%
         while ( rs_one.next() ) {
@@ -95,7 +94,7 @@
 
 
 <%-- -------- Iteration Code -------- --%>
-        <form action="report1.jsp" method="get">
+        <form action="report2a.jsp" method="get">
         <input type="hidden" value="get" name="action">
         <select name="ssn">
 <%
@@ -116,19 +115,11 @@
 <!-- REPORT -->
 <table border="1">
         <tr>
-            <th>title</th>
-            <th>section_id</th>
-            <th>le</th>
-            <th>di</th>
-            <th>enroll_limit</th>
-            <th>di_mandatory</th>
-            <th>f_name</th>
-            <th>co_number</th>
-            <th>review_session</th>
-            <th>waitlist</th>
-            <th>quarter</th>
-            <th>year</th>
-            <th>units</th>
+            <th>Title</th>
+            <th>Course</th>
+            <th>Conflicting Title</th>
+            <th>Conflicting Course</th>
+            
         </tr>
 
 <%
@@ -144,55 +135,20 @@
                 </td>
 
                 <td>
-                    <input value="<%= rs_three.getInt("section_id") %>" 
-                        name="section_id" size="10">
-                </td>
-                <td>
-                    <input value="<%= rs_three.getString("le") %>" 
-                        name="le" size="10">
-                </td>
-
-                <td>
-                    <input value="<%= rs_three.getString("di") %>" 
-                        name="di" size="10">
-                </td>
-
-                <td>
-                    <input value="<%= rs_three.getInt("enroll_limit") %>" 
-                        name="enroll_limit" size="10">
-                </td>
-                <td>
-                    <input value="<%= rs_three.getInt("di_mandatory") %>" 
-                        name="di_mandatory" size="10">
-                </td>
-                <td>
-                    <input value="<%= rs_three.getString("f_name") %>" 
-                        name="f_name" size="10">
-                </td>
-                <td>
                     <input value="<%= rs_three.getString("co_number") %>" 
                         name="co_number" size="10">
                 </td>
+
                 <td>
-                    <input value="<%= rs_three.getString("review_session") %>" 
-                        name="review_session" size="10">
+                    <input value="<%= rs_three.getString("conf_title") %>" 
+                        name="conf_title" size="10">
                 </td>
+
                 <td>
-                    <input value="<%= rs_three.getInt("waitlist") %>" 
-                        name="waitlist" size="10">
+                    <input value="<%= rs_three.getString("conf_co") %>" 
+                        name="conf_co" size="10">
                 </td>
-                <td>
-                    <input value="<%= rs_three.getString("quarter") %>" 
-                        name="quarter" size="10">
-                </td>
-                <td>
-                    <input value="<%= rs_three.getInt("year") %>" 
-                        name="year" size="10">
-                </td>
-                <td>
-                    <input value="<%= rs_three.getInt("units") %>" 
-                        name="units" size="10">
-                </td>
+
 
         </tr>
 <%
