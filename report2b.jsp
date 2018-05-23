@@ -229,22 +229,13 @@
         </form>
 
 
+<!-- 
+            m.date, Monday, rsh.time, c.le_ampm) AS Review_Session
+ -->
 <!-- REPORT -->
 <table border="1">
         <tr>
-            <th>title</th>
-            <th>section_id</th>
-            <th>le</th>
-            <th>di</th>
-            <th>enroll_limit</th>
-            <th>di_mandatory</th>
-            <th>f_name</th>
-            <th>co_number</th>
-            <th>review_session</th>
-            <th>waitlist</th>
-            <th>quarter</th>
-            <th>year</th>
-            <th>units</th>
+            <th> Review_Session </th>
         </tr>
 
 <%
@@ -255,61 +246,9 @@
 
         <tr>
                 <td>
-                    <input value="<%= rs_three.getString("title") %>" 
-                        name="title" size="10">
-                </td>
-
-                <td>
-                    <input value="<%= rs_three.getInt("section_id") %>" 
-                        name="section_id" size="10">
-                </td>
-                <td>
-                    <input value="<%= rs_three.getString("le") %>" 
-                        name="le" size="10">
-                </td>
-
-                <td>
-                    <input value="<%= rs_three.getString("di") %>" 
-                        name="di" size="10">
-                </td>
-
-                <td>
-                    <input value="<%= rs_three.getInt("enroll_limit") %>" 
-                        name="enroll_limit" size="10">
-                </td>
-                <td>
-                    <input value="<%= rs_three.getInt("di_mandatory") %>" 
-                        name="di_mandatory" size="10">
-                </td>
-                <td>
-                    <input value="<%= rs_three.getString("f_name") %>" 
-                        name="f_name" size="10">
-                </td>
-                <td>
-                    <input value="<%= rs_three.getString("co_number") %>" 
-                        name="co_number" size="10">
-                </td>
-                <td>
                     <input value="<%= rs_three.getString("review_session") %>" 
                         name="review_session" size="10">
                 </td>
-                <td>
-                    <input value="<%= rs_three.getInt("waitlist") %>" 
-                        name="waitlist" size="10">
-                </td>
-                <td>
-                    <input value="<%= rs_three.getString("quarter") %>" 
-                        name="quarter" size="10">
-                </td>
-                <td>
-                    <input value="<%= rs_three.getInt("year") %>" 
-                        name="year" size="10">
-                </td>
-                <td>
-                    <input value="<%= rs_three.getInt("units") %>" 
-                        name="units" size="10">
-                </td>
-
         </tr>
 <%
         }
