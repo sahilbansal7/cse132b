@@ -32,6 +32,8 @@
     Statement statement5 = conn.createStatement();
     Statement statement6 = conn.createStatement();
     Statement statement7 = conn.createStatement();
+    Statement statement8 = conn.createStatement();
+    Statement statement9 = conn.createStatement();
 
     /*
         Display all students who are enrolled in the current quarter
@@ -41,26 +43,32 @@
     ResultSet rs_two = statement2.executeQuery
         ("SELECT co_number FROM course");
     ResultSet rs_four = statement4.executeQuery
-        ("SELECT f.f_name FROM faculty");
+        ("SELECT f_name FROM faculty");
     ResultSet rs_five = statement5.executeQuery
-        ("SELECT f.f_name FROM faculty");
+        ("SELECT f_name FROM faculty");
     ResultSet rs_six = statement6.executeQuery
         ("SELECT distinct(quarter) FROM class");
     ResultSet rs_seven = statement7.executeQuery
         ("SELECT distinct(quarter) FROM class");
+    ResultSet rs_eight = statement8.executeQuery
+        ("SELECT distinct(year) FROM class");
+    ResultSet rs_nine = statement9.executeQuery
+        ("SELECT distinct(year) FROM class");
 %>
-
 <%
         String action = request.getParameter("action");
         ResultSet rs_three = null;
         if (action != null && action.equals("get")) {
-            String co_number = request.getParameter('co_number');
-            String f_name = request.getParameter('f_name');
-            String quarter = request.getParameter('quarter');
+            String co_number = request.getParameter("co_number");
+            String f_name = request.getParameter("f_name");
+            String quarter = request.getParameter("quarter");
+            String year = request.getParameter("year");
             Statement statement3 = conn.createStatement();
-            // Account for only the lecture time
+
+            String query3 = "(SELECT COUNT(pc.grade) AS A FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND c.year = '" + year + "' AND c.quarter = '" + quarter + "' AND (pc.grade = 'A' OR pc.grade = 'A+' OR pc.grade = 'A-') AND pc.quarter = c.quarter AND pc.year = c.year) UNION ALL (SELECT COUNT(pc.grade) AS B FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND c.year = '" + year + "' AND c.quarter = '" + quarter + "' AND (pc.grade = 'B' OR pc.grade = 'B+' OR pc.grade = 'B-') AND pc.quarter = c.quarter AND pc.year = c.year) UNION ALL (SELECT COUNT(pc.grade) AS C FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND c.year = '" + year + "' AND c.quarter = '" + quarter + "' AND (pc.grade = 'C' OR pc.grade = 'C+' OR pc.grade = 'C-') AND pc.quarter = c.quarter AND pc.year = c.year) UNION ALL (SELECT COUNT(pc.grade) AS D FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND c.year = '" + year + "' AND c.quarter = '" + quarter + "' AND (pc.grade = 'D' OR pc.grade = 'D+' OR pc.grade = 'D-') AND pc.quarter = c.quarter AND pc.year = c.year) UNION ALL (SELECT COUNT(pc.grade) AS Other FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND c.year = '" + year + "' AND c.quarter = '" + quarter + "' AND (pc.grade = 'F' OR pc.grade = 'IN') AND pc.quarter = c.quarter AND pc.year = c.year)";
             rs_three = statement3.executeQuery
-            ("SELECT COUNT(*) AS A FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND c.co_number = '" + co_number + "' f.f_name = '" + f_name + "' AND c.quarter = '" + quarter + "' AND pc.grade = 'A'");
+            (query3);
+            
         }
 %>
 
@@ -95,8 +103,8 @@
 
     <tr>
     <td>
-        <input value="<%= rs_four.getString("f.f_name") %>" 
-            name="f.f_name" size="10">
+        <input value="<%= rs_four.getString("f_name") %>" 
+            name="f_name" size="10">
     </td>
     </tr>
 <%
@@ -124,6 +132,26 @@
 %>
     </table>
 
+    <table border="1">
+        <tr>
+            <th>Year</th>
+        </tr>
+
+<%
+        while ( rs_eight.next() ) {
+%>
+
+    <tr>
+    <td>
+        <input value="<%= rs_eight.getString("year") %>" 
+            name="year" size="10">
+    </td>
+    </tr>
+<%
+        }
+%>
+    </table>
+
 <%-- -------- Iteration Code -------- --%>
         <form action="report3.jsp" method="get">
         <input type="hidden" value="get" name="action">
@@ -140,13 +168,13 @@
 %>
         </select>
 
-        <select name="f.f_name">
+        <select name="f_name">
 <%
         // Iterate over the ResultSet
         while ( rs_five.next() ) {
 %>
 
-            <option id ='f.f_name'> <%= rs_five.getString("f.f_name") %> </option>
+            <option id ='f_name'> <%= rs_five.getString("f_name") %> </option>
 <%
         }
 %>
@@ -164,17 +192,54 @@
         }
 %>
         </select>
+
+        <select name="year">
+<%
+        // Iterate over the ResultSet
+        while ( rs_nine.next() ) {
+
+%>
+
+            <option id ='year'> <%= rs_nine.getString("year") %> </option>
+<%
+        }
+%>
+        </select>
+
         <button type="submit" value="submit"> Do It </button>
         </form>
 
 
 <!-- REPORT -->
 <table border="1">
-        <tr>
-            <th>Average Grade</th>
-            
+  <tr>
+                <td>
+                    As
+                </td>
         </tr>
+        <tr>
+                <td>
+                    Bs
+                </td>
+        </tr>
+        <tr>
+                <td>
+                    Cs
+                </td>
+        </tr>
+        <tr>
+                <td>
+                    Ds
+                </td>
+        </tr>
+        <tr>
+                <td>
+                    Others
+                </td>
+        </tr>
+</table>
 
+<table float = 'right' border ='1'>
 <%
         // Iterate over the ResultSet
         while (rs_three != null && rs_three.next() ) {
