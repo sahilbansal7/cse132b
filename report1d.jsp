@@ -49,8 +49,6 @@ ResultSet rs_four = statement4.executeQuery
 %>
 
 
-
-
 <%
     
 
