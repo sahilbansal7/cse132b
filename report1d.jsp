@@ -49,25 +49,9 @@ ResultSet rs_four = statement4.executeQuery
 %>
 
 
-String action = request.getParameter("action");
-    ResultSet rs_three = null;
-    ResultSet rs_four = null;
-    if (action != null && action.equals("get")) {
-        int ssn = Integer.parseInt(request.getParameter("ssn"));
-        String str_ssn = Integer.toString(ssn);
-        String degree = request.getParameter("d_department");
-        Statement statement3 = conn.createStatement();
-        rs_three = statement3.executeQuery
-        ("SELECT d.total_units - SUM(c.units) AS Remaining FROM degree d, student s, past_classes pc, course c WHERE d.d_department = '" + degree + "' AND s.s_ssn = " + str_ssn + " AND pc.s_ssn = s.s_ssn AND pc.grade != 'F' AND c.co_number = pc.co_number");
-
-        Statement statement4 = conn.createStatement();
-        rs_four = statement4.executeQuery 
-        ("SELECT min_lower - SUM(c.units), min_upper - SUM(cc.units), min_tech_elective - SUM(ccc.units) FROM student s, degree d, course c, past_classes pc, course cc, past_classes ppc, course ccc, past_classes pppc WHERE s.s_ssn = " + str_ssn + " AND s.degrees = '" + degree + "' AND pc.co_number = c.co_number AND pc.grade != 'F' AND c.category = 'lower' AND cc.co_number = ppc.co_number AND ppc.grade != 'F' AND cc.category = 'upper' AND ccc.co_number = pppc.co_number AND pppc.grade != 'F' AND ccc.category = 'tech_elective'");
-
-
-
-
 <%
+    
+
 // First HTML SELECT Prompt
     String action = request.getParameter("action");
     ResultSet rs_five = null;
@@ -76,6 +60,14 @@ String action = request.getParameter("action");
         int ssn = Integer.parseInt(request.getParameter("ssn"));
         String str_ssn = Integer.toString(ssn);
         String degree = request.getParameter("d_department");
+        Statement statement5 = conn.createStatement();
+        String query5 = "SELECT (d.total_units - SUM(c.units)) AS Remaining FROM degree d, student s, past_classes pc, course c WHERE d.d_department = '" + degree + "' AND (d.d_degree_name = 'bs' OR d.d_degree_name = 'ba') AND s.s_ssn = " + str_ssn + " AND pc.s_ssn = s.s_ssn AND pc.grade != 'F' AND c.co_number = pc.co_number GROUP BY d.total_units";
+        rs_five = statement5.executeQuery
+        (query5);
+        Statement statement6 = conn.createStatement();
+        String query6 = "(SELECT (d.min_upper - SUM(c.units)) as Rem FROM degree d, student s, course c, past_classes pc WHERE s.s_ssn = " + str_ssn + " AND s.s_ssn = pc.s_ssn AND pc.co_number = c.co_number AND pc.grade != 'F' AND c.category = 'upper' AND d.d_department = '" + degree + "' AND (d.d_degree_name = 'bs' OR d.d_degree_name = 'ba') GROUP BY d.min_upper) UNION (SELECT (d.min_lower - SUM(c.units)) as Rem FROM degree d, student s, course c, past_classes pc WHERE s.s_ssn = " + str_ssn + " AND s.s_ssn = pc.s_ssn AND pc.co_number = c.co_number AND pc.grade != 'F' AND c.category = 'lower' AND d.d_department = '" + degree + "' AND (d.d_degree_name = 'bs' OR d.d_degree_name = 'ba') GROUP BY d.min_lower) UNION (SELECT (d.min_tech_elective - SUM(c.units)) as Rem FROM degree d, student s, course c, past_classes pc WHERE s.s_ssn = " + str_ssn + " AND s.s_ssn = pc.s_ssn AND pc.co_number = c.co_number AND pc.grade != 'F' AND c.category = 'tech_elective' AND d.d_department = '" + degree + "' AND (d.d_degree_name = 'bs' OR d.d_degree_name = 'ba') GROUP BY d.min_tech_elective)";
+        rs_six = statement6.executeQuery 
+        (query6);
         
     }
 
@@ -173,7 +165,7 @@ while ( rs_two.next() ) {
     // Iterate over the ResultSet
     while ( rs_four.next() ) {
 %>
-        <option id ='d_degree_name'> <%= rs_four.getString("d_degree_name") %> </option>
+        <option id ='d_department'> <%= rs_four.getString("d_department") %> </option>
 <%
         }
 %>
@@ -187,6 +179,49 @@ while ( rs_two.next() ) {
         Click to see course information
     </button>
 </form>
+
+<table border="1">
+        <tr>
+            <th>Remaining Units</th>
+        </tr>
+<%
+    // Iterate over the ResultSet
+    while (rs_five != null && rs_five.next() ) {
+%>
+    <tr>
+        <td>
+            <input value="<%= rs_five.getInt("remaining") %>" 
+                name="remaining" size="10">
+        </td>
+    </tr>
+<%
+        }
+%>
+</table>
+<table border="1">
+        <tr>
+            <th>
+                Remaining Technical
+                <br>
+                Remaining Lower
+                <br>
+                Remaining Upper
+            </th>
+        </tr>
+<%
+    // Iterate over the ResultSet
+    while (rs_six != null && rs_six.next() ) {
+%>
+    <tr>
+        <td>
+            <input value="<%= rs_six.getInt("rem") %>" 
+                name="rem" size="10">
+        </td>
+    </tr>
+<%
+        }
+%>
+</table>
       
 
 <%-- -------- Close Connection Code -------- --%>
