@@ -33,23 +33,22 @@
         Display all students who are enrolled in the current quarter
     */
     ResultSet rs_one = statement1.executeQuery
-        ("SELECT * FROM student s, student_enrollment se WHERE se.s_ssn = s.s_ssn AND se.quarter = 'SPRING' AND se.year = '2018'");
+    ("SELECT section_id FROM course_enrollment");
     ResultSet rs_two = statement2.executeQuery
-        ("SELECT * FROM student s, student_enrollment se WHERE se.s_ssn = s.s_ssn AND se.quarter = 'SPRING' AND se.year = '2018'");
+    ("SELECT section_id FROM course_enrollment");
 %>
 
 <%
-        String action = request.getParameter("action");
-        ResultSet rs_three = null;
-        if (action != null && action.equals("get")) {
-            int ssn = Integer.parseInt(request.getParameter("ssn"));
-            String str_ssn = Integer.toString(ssn);
-            Statement statement3 = conn.createStatement();
-            String hour = ("interval '1 hour'");
-            // Account for only the lecture time
-            rs_three = statement3.executeQuery
-            ("SELECT not_enrolled.title, cc.* FROM student s, class enrolled, class not_enrolled, course c, course_enrollment ce WHERE s.s_ssn = " + str_ssn + " AND s.s_ssn = ce.s_ssn AND enrolled.co_number = ce.co_number AND enrolled.section_id = ce.section_id AND ce.co_number = c.co_number AND enrolled.co_number != not_enrolled.co_number AND enrolled.day = not_enrolled.day AND (enrolled.le_time = not_enrolled.le_time OR not_enrolled.le_time > enrolled.le_time AND not_enrolled.le_time < (enrolled.le_time + " + hour + ") OR (not_enrolled.le_time + " + hour + ") > enrolled.le_time AND (not_enrolled.le_time + " + hour + ") < (enrolled.le_time + " + hour + "))");
-        }
+    String action = request.getParameter("action");
+    ResultSet rs_three = null;
+    if (action != null && action.equals("get")) {
+        int ssn = Integer.parseInt(request.getParameter("ssn"));
+        String str_ssn = Integer.toString(ssn);
+        Statement statement3 = conn.createStatement();
+        String hour = ("interval '1 hour'");
+        rs_three = statement3.executeQuery
+        ("SELECT (m.date, Monday, rsh.time, c.le_ampm) AS Review_Session FROM student s, student_enrollment se, class c, course_enrollment ce, review_session_hours rsh, may m WHERE s.s_ssn = " + str_ssn + " AND m.date >= '" + start_date + "' AND m.date <= '" + end_date + "' AND s.s_ssn = se.s_ssn AND ce.section_id = se.section_id AND ce.co_number = se.co_number AND se.section_id = c.section_id AND se.co_number = c.co_number AND c.quarter = 'Spring' AND c.year = 2018 AND c.le_day = rsh.day AND c.le_time = rsh.beginning AND c.le_ampm = rsh.ampm");
+    }
 %>
 
     <table border="1">
