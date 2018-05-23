@@ -58,17 +58,26 @@
 <%
         String action = request.getParameter("action");
         ResultSet rs_three = null;
+        ResultSet rs_ten = null;
+        ResultSet rs_eleven = null;
         if (action != null && action.equals("get")) {
             String co_number = request.getParameter("co_number");
             String f_name = request.getParameter("f_name");
             String quarter = request.getParameter("quarter");
             String year = request.getParameter("year");
             Statement statement3 = conn.createStatement();
+            Statement statement10 = conn.createStatement();
+            Statement statement11 = conn.createStatement();
 
             String query3 = "(SELECT COUNT(pc.grade) AS A FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND c.year = '" + year + "' AND c.quarter = '" + quarter + "' AND (pc.grade = 'A' OR pc.grade = 'A+' OR pc.grade = 'A-') AND pc.quarter = c.quarter AND pc.year = c.year) UNION ALL (SELECT COUNT(pc.grade) AS B FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND c.year = '" + year + "' AND c.quarter = '" + quarter + "' AND (pc.grade = 'B' OR pc.grade = 'B+' OR pc.grade = 'B-') AND pc.quarter = c.quarter AND pc.year = c.year) UNION ALL (SELECT COUNT(pc.grade) AS C FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND c.year = '" + year + "' AND c.quarter = '" + quarter + "' AND (pc.grade = 'C' OR pc.grade = 'C+' OR pc.grade = 'C-') AND pc.quarter = c.quarter AND pc.year = c.year) UNION ALL (SELECT COUNT(pc.grade) AS D FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND c.year = '" + year + "' AND c.quarter = '" + quarter + "' AND (pc.grade = 'D' OR pc.grade = 'D+' OR pc.grade = 'D-') AND pc.quarter = c.quarter AND pc.year = c.year) UNION ALL (SELECT COUNT(pc.grade) AS Other FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND c.year = '" + year + "' AND c.quarter = '" + quarter + "' AND (pc.grade = 'F' OR pc.grade = 'IN') AND pc.quarter = c.quarter AND pc.year = c.year)";
             rs_three = statement3.executeQuery
             (query3);
-            
+
+            String query4 = "(SELECT COUNT(pc.grade) AS A FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND (pc.grade = 'A' OR pc.grade = 'A+' OR pc.grade = 'A-')) UNION ALL (SELECT COUNT(pc.grade) AS B FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND (pc.grade = 'B' OR pc.grade = 'B+' OR pc.grade = 'B-')) UNION ALL (SELECT COUNT(pc.grade) AS C FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND (pc.grade = 'C' OR pc.grade = 'C+' OR pc.grade = 'C-')) UNION ALL (SELECT COUNT(pc.grade) AS D FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND (pc.grade = 'D' OR pc.grade = 'D+' OR pc.grade = 'D-')) UNION ALL (SELECT COUNT(pc.grade) AS Other FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND (pc.grade = 'F' OR pc.grade = 'IN'))";
+            rs_ten = statement10.executeQuery(query4);
+
+            String query5 = "(SELECT COUNT(pc.grade) AS A FROM student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND (pc.grade = 'A' OR pc.grade = 'A+' OR pc.grade = 'A-')) UNION ALL (SELECT COUNT(pc.grade) AS B FROM student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND (pc.grade = 'B' OR pc.grade = 'B+' OR pc.grade = 'B-')) UNION ALL (SELECT COUNT(pc.grade) AS C FROM student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND (pc.grade = 'C' OR pc.grade = 'C+' OR pc.grade = 'C-')) UNION ALL (SELECT COUNT(pc.grade) AS D FROM student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND (pc.grade = 'D' OR pc.grade = 'D+' OR pc.grade = 'D-')) UNION ALL (SELECT COUNT(pc.grade) AS Other FROM student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND (pc.grade = 'F' OR pc.grade = 'IN'))";
+            rs_eleven = statement11.executeQuery(query5);
         }
 %>
 
@@ -239,7 +248,8 @@
         </tr>
 </table>
 
-<table float = 'right' border ='1'>
+<p strong> Course ID X, Professor Y, Quarter Z </p>
+<table border ='1'>
 <%
         // Iterate over the ResultSet
         while (rs_three != null && rs_three.next() ) {
@@ -249,6 +259,38 @@
         <tr>
                 <td>
                     <input value="<%= rs_three.getString("A") %>"name="A" size="10">
+                </td>
+        </tr>
+<%
+        }
+%>
+</table>
+
+<p strong> Course ID X, Professor Y </p>
+<table border ='1'>
+<%
+        // Iterate over the ResultSet
+        while (rs_ten != null && rs_ten.next() ) {
+%>
+        <tr>
+                <td>
+                    <input value="<%= rs_ten.getString("A") %>"name="A" size="10">
+                </td>
+        </tr>
+<%
+        }
+%>
+</table>
+
+<p strong> Course ID X </p>
+<table border ='1'>
+<%
+        // Iterate over the ResultSet
+        while (rs_eleven != null && rs_eleven.next() ) {
+%>
+        <tr>
+                <td>
+                    <input value="<%= rs_eleven.getString("A") %>"name="A" size="10">
                 </td>
         </tr>
 <%
