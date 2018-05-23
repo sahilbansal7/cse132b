@@ -29,6 +29,9 @@
     Statement statement1 = conn.createStatement();
     Statement statement2 = conn.createStatement();
 
+    Statement statement8 = conn.createStatement();
+    Statement statement9 = conn.createStatement();
+
     Statement statement4 = conn.createStatement();
     Statement statement5 = conn.createStatement();
 
@@ -42,6 +45,11 @@
     ("SELECT section_id FROM course_enrollment");
     ResultSet rs_two = statement2.executeQuery
     ("SELECT section_id FROM course_enrollment");
+
+    ResultSet rs_eight = statement1.executeQuery
+    ("SELECT f_name FROM faculty");
+    ResultSet rs_nine = statement2.executeQuery
+    ("SELECT f_name FROM faculty");
 
     ResultSet rs_four = statement4.executeQuery
     ("SELECT start_date FROM may");
@@ -59,22 +67,44 @@
     String action = request.getParameter("action");
     ResultSet rs_three = null;
     if (action != null && action.equals("get")) {
-        int ssn = Integer.parseInt(request.getParameter("ssn"));
-        String str_ssn = Integer.toString(ssn);
+        String f_n = request.getParameter("f_name");
+        int s_id = Integer.parseInt(request.getParameter("s_id"));
+        String str_s_id = Integer.toString(s_id);
         String start_date = request.getParameter("start_date");
         String end_date = request.getParameter("end_date");
         Statement statement3 = conn.createStatement();
         rs_three = statement3.executeQuery
-        ("SELECT (m.date, Monday, rsh.time, c.le_ampm) AS Review_Session FROM student s, student_enrollment se, class c, course_enrollment ce, review_session_hours rsh, may m WHERE s.s_ssn = " + str_ssn + " AND m.date >= '" + start_date + "' AND m.date <= '" + end_date + "' AND s.s_ssn = se.s_ssn AND ce.section_id = se.section_id AND ce.co_number = se.co_number AND se.section_id = c.section_id AND se.co_number = c.co_number AND c.quarter = 'Spring' AND c.year = 2018 AND c.le_day = rsh.day AND c.le_time = rsh.beginning AND c.le_ampm = rsh.ampm");
+        ("SELECT (m.date, Monday, rsh.time, c.le_ampm) AS Review_Session FROM student s, student_enrollment se, class c, course_enrollment ce, review_session_hours rsh, may m WHERE s.s_ssn = " + str_s_id + " AND m.date >= '" + start_date + "' AND m.date <= '" + end_date + "' AND s.s_ssn = se.s_ssn AND ce.section_id = se.section_id AND ce.co_number = se.co_number AND se.section_id = c.section_id AND se.co_number = c.co_number AND c.quarter = 'Spring' AND c.year = 2018 AND c.le_day = rsh.day AND c.le_time = rsh.beginning AND c.le_ampm = rsh.ampm");
     }
 %>
+    </table>
 
     <table border="1">
         <tr>
-            <th>SSN</th>
-            <th>First Name</th>
-            <th>Middle Name (Optional)</th>
-            <th>Last Name</th>
+            <th>Instructor</th>
+        </tr>
+
+
+<%
+        while ( rs_eight.next() ) {
+%>
+
+    <tr>
+    <td>
+        <input value="<%= rs_eight.getString("f_name") %>" 
+            name="f_name" size="10">
+    </td>
+    </tr>
+    
+
+<%
+        }
+%>
+    </table>
+
+    <table border="1">
+        <tr>
+            <th>Section ID</th>
         </tr>
 
 
@@ -84,23 +114,8 @@
 
     <tr>
     <td>
-        <input value="<%= rs_one.getInt("s_ssn") %>" 
-            name="s_ssn" size="10">
-    </td>
-
-    <td>
-        <input value="<%= rs_one.getString("first_name") %>" 
-            name="first_name" size="10">
-    </td>
-
-    <td>
-        <input value="<%= rs_one.getString("middle_name") %>"
-            name="middle_name" size="15">
-    </td>
-
-    <td>
-        <input value="<%= rs_one.getString("last_name") %>" 
-            name="last_name" size="15">
+        <input value="<%= rs_one.getInt("section_id") %>" 
+            name="section_id" size="10">
     </td>
     </tr>
     
@@ -108,7 +123,6 @@
 <%
         }
 %>
-    </table>
 
     <table border="1">
         <tr>
@@ -160,14 +174,27 @@
 <%-- -------- Iteration Code -------- --%>
         <form action="report2b.jsp" method="get">
         <input type="hidden" value="get" name="action">
-        <select name="ssn">
+        <select name="f_n">
+<%
+        // Iterate over the ResultSet
+        while ( rs_nine.next() ) {
+
+%>
+
+            <option id ='f_n'> <%= rs_two.getInt("f_name") %> </option>
+<%
+        }
+%>
+        </select>
+        
+        <select name="s_id">
 <%
         // Iterate over the ResultSet
         while ( rs_two.next() ) {
 
 %>
 
-            <option id ='ssn'> <%= rs_two.getInt("s_ssn") %> </option>
+            <option id ='s_id'> <%= rs_two.getInt("section_id") %> </option>
 <%
         }
 %>
