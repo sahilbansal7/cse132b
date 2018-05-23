@@ -47,8 +47,10 @@
             Statement statement3 = conn.createStatement();
             String hour = ("interval '1 hour'");
             // Account for only the lecture time
-            rs_three = statement3.executeQuery
-            ("SELECT not_enrolled.title, not_enrolled.co_number, enrolled.title, enrolled.co_number FROM student s, class enrolled, class not_enrolled, course c, course_enrollment ce WHERE s.s_ssn = " + str_ssn + " AND s.s_ssn = ce.s_ssn AND enrolled.co_number = ce.co_number AND enrolled.section_id = ce.section_id AND ce.co_number = c.co_number AND enrolled.co_number != not_enrolled.co_number AND enrolled.day = not_enrolled.day AND (enrolled.le_time = not_enrolled.le_time OR not_enrolled.le_time > enrolled.le_time AND not_enrolled.le_time < (enrolled.le_time + " + hour + ") OR (not_enrolled.le_time + " + hour + ") > enrolled.le_time AND (not_enrolled.le_time + " + hour + ") < (enrolled.le_time + " + hour + "))");
+            String query3 = "SELECT not_enrolled.title, not_enrolled.co_number, enrolled.title, enrolled.co_number FROM student s, class enrolled, class not_enrolled, course c, course_enrollment ce WHERE s.s_ssn = " + str_ssn + " AND s.s_ssn = ce.s_ssn AND enrolled.co_number = ce.co_number AND enrolled.section_id = ce.section_id AND ce.co_number = c.co_number AND enrolled.co_number != not_enrolled.co_number AND enrolled.day = not_enrolled.day AND (enrolled.le_time = not_enrolled.le_time OR not_enrolled.le_time > enrolled.le_time AND not_enrolled.le_time < (enrolled.le_time + " + hour + ") OR (not_enrolled.le_time + " + hour + ") > enrolled.le_time AND (not_enrolled.le_time + " + hour + ") < (enrolled.le_time + " + hour + "))";
+            out.println(query3);
+            //rs_three = statement3.executeQuery
+            //(query3);
         }
 %>
 
