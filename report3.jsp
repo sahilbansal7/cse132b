@@ -60,6 +60,7 @@
         ResultSet rs_three = null;
         ResultSet rs_ten = null;
         ResultSet rs_eleven = null;
+        ResultSet rs_twelve = null;
         if (action != null && action.equals("get")) {
             String co_number = request.getParameter("co_number");
             String f_name = request.getParameter("f_name");
@@ -68,6 +69,7 @@
             Statement statement3 = conn.createStatement();
             Statement statement10 = conn.createStatement();
             Statement statement11 = conn.createStatement();
+            Statement statement12 = conn.createStatement();
 
             String query3 = "(SELECT COUNT(pc.grade) AS A FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND c.year = '" + year + "' AND c.quarter = '" + quarter + "' AND (pc.grade = 'A' OR pc.grade = 'A+' OR pc.grade = 'A-') AND pc.quarter = c.quarter AND pc.year = c.year) UNION ALL (SELECT COUNT(pc.grade) AS B FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND c.year = '" + year + "' AND c.quarter = '" + quarter + "' AND (pc.grade = 'B' OR pc.grade = 'B+' OR pc.grade = 'B-') AND pc.quarter = c.quarter AND pc.year = c.year) UNION ALL (SELECT COUNT(pc.grade) AS C FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND c.year = '" + year + "' AND c.quarter = '" + quarter + "' AND (pc.grade = 'C' OR pc.grade = 'C+' OR pc.grade = 'C-') AND pc.quarter = c.quarter AND pc.year = c.year) UNION ALL (SELECT COUNT(pc.grade) AS D FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND c.year = '" + year + "' AND c.quarter = '" + quarter + "' AND (pc.grade = 'D' OR pc.grade = 'D+' OR pc.grade = 'D-') AND pc.quarter = c.quarter AND pc.year = c.year) UNION ALL (SELECT COUNT(pc.grade) AS Other FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND c.year = '" + year + "' AND c.quarter = '" + quarter + "' AND (pc.grade = 'F' OR pc.grade = 'IN') AND pc.quarter = c.quarter AND pc.year = c.year)";
             rs_three = statement3.executeQuery
@@ -78,6 +80,9 @@
 
             String query4 = "(SELECT COUNT(pc.grade) AS A FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND c.quarter = '" + quarter + "' AND (pc.grade = 'A' OR pc.grade = 'A+' OR pc.grade = 'A-') AND pc.quarter = c.quarter) UNION ALL (SELECT COUNT(pc.grade) AS B FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND c.quarter = '" + quarter + "' AND (pc.grade = 'B' OR pc.grade = 'B+' OR pc.grade = 'B-') AND pc.quarter = c.quarter) UNION ALL (SELECT COUNT(pc.grade) AS C FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND c.quarter = '" + quarter + "' AND (pc.grade = 'C' OR pc.grade = 'C+' OR pc.grade = 'C-') AND pc.quarter = c.quarter) UNION ALL (SELECT COUNT(pc.grade) AS D FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND c.quarter = '" + quarter + "' AND (pc.grade = 'D' OR pc.grade = 'D+' OR pc.grade = 'D-') AND pc.quarter = c.quarter) UNION ALL (SELECT COUNT(pc.grade) AS Other FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND pc.co_number = c.co_number AND c.co_number = '" + co_number + "' AND f.f_name = '" + f_name + "' AND c.quarter = '" + quarter + "' AND (pc.grade = 'F' OR pc.grade = 'IN') AND pc.quarter = c.quarter)";
             rs_ten = statement11.executeQuery(query4);
+
+            String query6 = "SELECT SUM(gvc.number_grade)/COUNT(pc.grade) FROM grade_conversion_table gvc, past_classes pc, faculty f, course c WHERE f.f_name = '" + f_name + "' AND c.co_number = '" + co_number + "' AND pc.co_number = c.co_number AND (pc.grade != 'F' OR pc.grade != 'IN') AND gvc.letter_grade = pc.grade";
+            rs_twelve = statement12.executeQUery(query6);
         }
 %>
 
@@ -291,6 +296,29 @@
         <tr>
                 <td>
                     <input value="<%= rs_eleven.getString("A") %>"name="A" size="10">
+                </td>
+        </tr>
+<%
+        }
+%>
+</table>
+
+<table border="1">
+    <tr>
+        <td>
+            <strong> Grade Point Average of Course ID X by Professor Y </strong>
+        </td>
+    </tr>
+</table>
+
+<table border ='1'>
+<%
+        // Iterate over the ResultSet
+        while (rs_ten != null && rs_ten.next() ) {
+%>
+        <tr>
+                <td>
+                    <input value="<%= rs_ten.getString("A") %>"name="A" size="10">
                 </td>
         </tr>
 <%
