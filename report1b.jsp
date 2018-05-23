@@ -32,9 +32,9 @@
             Display all students who are enrolled in the current quarter
         */
         ResultSet rs_one = statement1.executeQuery
-            ("SELECT * FROM class");
+            ("SELECT * FROM class WHERE quarter = 'Spring' AND year = 2018");
         ResultSet rs_two = statement2.executeQuery
-            ("SELECT DISTINCT(title) FROM class");
+            ("SELECT * FROM class WHERE quarter = 'Spring' AND year = 2018");
 %>
 
 <%
@@ -129,7 +129,6 @@
             <th>last_name</th>
             <th>period_of_attendance</th>
             <th>enrolled</th>
-            <th>degrees</th>
             <th>california</th>
             <th>foreigner</th>
             <th>non_ca</th>
@@ -170,10 +169,6 @@
                 <td>
                     <input value="<%= rs_three.getInt("enrolled") %>" 
                         name="enrolled" size="10">
-                </td>
-                <td>
-                    <input value="<%= rs_three.getString("degrees") %>" 
-                        name="degrees" size="10">
                 </td>
                 <td>
                     <input value="<%= rs_three.getInt("california") %>" 

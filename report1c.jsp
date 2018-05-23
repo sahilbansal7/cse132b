@@ -48,7 +48,7 @@
             Statement statement3 = conn.createStatement();
             Statement statement4 = conn.createStatement();
             Statement statement5 = conn.createStatement();
-            rs_three = statement3.executeQuery("SELECT c.*, pc.grade, cs.units FROM class c, course cs, past_classes pc WHERE " +str_ssn + " = pc.s_ssn AND c.section_id = pc.section_id AND c.co_number = pc.co_number AND c.co_number = cs.co_number ORDER BY c.quarter, c.year DESC");
+            rs_three = statement3.executeQuery("SELECT DISTINCT(c.*), pc.grade, cs.units FROM class c, course cs, past_classes pc WHERE " +str_ssn + " = pc.s_ssn AND c.section_id = pc.section_id AND c.co_number = pc.co_number AND c.co_number = cs.co_number ORDER BY c.quarter, c.year DESC");
             rs_four = statement4.executeQuery ("SELECT ROUND(AVG(gdc.number_grade)) FROM student s, past_classes pc, grade_conversion gdc WHERE s.s_ssn = pc.s_ssn AND s.s_ssn = " + str_ssn + " AND pc.grade != 'IN' AND pc.grade = gdc.LETTER_GRADE");
             rs_five = statement5.executeQuery("SELECT ROUND(AVG(gdc.number_grade)), pc.quarter, pc.year FROM student s, past_classes pc, grade_conversion gdc WHERE s.s_ssn = pc.s_ssn AND s.s_ssn = " + str_ssn + " AND grade != 'IN' AND pc.grade = gdc.LETTER_GRADE GROUP BY quarter, year");
         }
