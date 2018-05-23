@@ -29,6 +29,12 @@
     Statement statement1 = conn.createStatement();
     Statement statement2 = conn.createStatement();
 
+    Statement statement4 = conn.createStatement();
+    Statement statement5 = conn.createStatement();
+
+    Statement statement6 = conn.createStatement();
+    Statement statement7 = conn.createStatement();
+
     /*
         Display all students who are enrolled in the current quarter
     */
@@ -36,6 +42,17 @@
     ("SELECT section_id FROM course_enrollment");
     ResultSet rs_two = statement2.executeQuery
     ("SELECT section_id FROM course_enrollment");
+
+    ResultSet rs_four = statement4.executeQuery
+    ("SELECT start_date FROM may");
+    ResultSet rs_five = statement5.executeQuery
+    ("SELECT start_date FROM may");
+    
+    ResultSet rs_six = statement6.executeQuery
+    ("SELECT end_date FROM may");
+    ResultSet rs_seven = statement7.executeQuery
+    ("SELECT end_date FROM may");
+    
 %>
 
 <%
@@ -44,8 +61,9 @@
     if (action != null && action.equals("get")) {
         int ssn = Integer.parseInt(request.getParameter("ssn"));
         String str_ssn = Integer.toString(ssn);
+        String start_date = request.getParameter("start_date");
+        String end_date = request.getParameter("end_date");
         Statement statement3 = conn.createStatement();
-        String hour = ("interval '1 hour'");
         rs_three = statement3.executeQuery
         ("SELECT (m.date, Monday, rsh.time, c.le_ampm) AS Review_Session FROM student s, student_enrollment se, class c, course_enrollment ce, review_session_hours rsh, may m WHERE s.s_ssn = " + str_ssn + " AND m.date >= '" + start_date + "' AND m.date <= '" + end_date + "' AND s.s_ssn = se.s_ssn AND ce.section_id = se.section_id AND ce.co_number = se.co_number AND se.section_id = c.section_id AND se.co_number = c.co_number AND c.quarter = 'Spring' AND c.year = 2018 AND c.le_day = rsh.day AND c.le_time = rsh.beginning AND c.le_ampm = rsh.ampm");
     }
@@ -92,9 +110,55 @@
 %>
     </table>
 
+    <table border="1">
+        <tr>
+            <th>Start Date</th>
+        </tr>
+
+
+<%
+        while ( rs_four.next() ) {
+%>
+
+    <tr>
+    <td>
+        <input value="<%= rs_four.getString("start_date") %>" 
+            name="start_date" size="10">
+    </td>
+    </tr>
+    
+
+<%
+        }
+%>
+    </table>
+
+    <table border="1">
+        <tr>
+            <th>End Date</th>
+        </tr>
+
+
+<%
+        while ( rs_six.next() ) {
+%>
+
+    <tr>
+    <td>
+        <input value="<%= rs_six.getString("end_date") %>" 
+            name="end_date" size="10">
+    </td>
+    </tr>
+    
+
+<%
+        }
+%>
+    </table>
+
 
 <%-- -------- Iteration Code -------- --%>
-        <form action="report1.jsp" method="get">
+        <form action="report2b.jsp" method="get">
         <input type="hidden" value="get" name="action">
         <select name="ssn">
 <%
@@ -104,6 +168,32 @@
 %>
 
             <option id ='ssn'> <%= rs_two.getInt("s_ssn") %> </option>
+<%
+        }
+%>
+        </select>
+
+        <select name="start_date">
+<%
+        // Iterate over the ResultSet
+        while ( rs_five.next() ) {
+
+%>
+
+            <option id ='start_date'> <%= rs_five.getString("start_date") %> </option>
+<%
+        }
+%>
+        </select>
+
+        <select name="end_date">
+<%
+        // Iterate over the ResultSet
+        while ( rs_seven.next() ) {
+
+%>
+
+            <option id ='end_date'> <%= rs_seven.getString("end_date") %> </option>
 <%
         }
 %>
