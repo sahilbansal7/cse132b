@@ -54,12 +54,13 @@
         String action = request.getParameter("action");
         ResultSet rs_three = null;
         if (action != null && action.equals("get")) {
-            int ssn = Integer.parseInt(request.getParameter("ssn"));
-            String str_ssn = Integer.toString(ssn);
+            String co_number = request.getParameter('co_number');
+            String f_name = request.getParameter('f_name');
+            String quarter = request.getParameter('quarter');
             Statement statement3 = conn.createStatement();
             // Account for only the lecture time
             rs_three = statement3.executeQuery
-            ("");
+            ("SELECT COUNT(*) AS A FROM faculty f, student s, past_classes pc, class c WHERE pc.s_ssn = s.s_ssn AND c.f_name = f.f_name AND c.co_number = '" + co_number + "' f.f_name = '" + f_name + "' AND c.quarter = '" + quarter + "' AND pc.grade = 'A'");
         }
 %>
 
@@ -174,7 +175,7 @@
             
         </tr>
 
-<!-- <%
+<%
         // Iterate over the ResultSet
         while (rs_three != null && rs_three.next() ) {
 
@@ -182,30 +183,12 @@
 
         <tr>
                 <td>
-                    <input value="<%= rs_three.getString("title") %>" 
-                        name="title" size="10">
+                    <input value="<%= rs_three.getString("A") %>"name="A" size="10">
                 </td>
-
-                <td>
-                    <input value="<%= rs_three.getString("co_number") %>" 
-                        name="co_number" size="10">
-                </td>
-
-                <td>
-                    <input value="<%= rs_three.getString("conf_title") %>" 
-                        name="conf_title" size="10">
-                </td>
-
-                <td>
-                    <input value="<%= rs_three.getString("conf_co") %>" 
-                        name="conf_co" size="10">
-                </td>
-
-
         </tr>
 <%
         }
-%> -->
+%>
 </table>
 
 <%-- -------- Close Connection Code -------- --%>
