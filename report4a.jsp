@@ -50,6 +50,24 @@
 
             // First check if comparing Lecture and Discussion works correctly
             
+            CREATE OR REPLACE FUNCTION first()
+            RETURNS trigger AS
+            $$
+            BEGIN
+            IF POSITION('M' in New.le_day ) > 0 && POSITION('M' in New.di_day) > 0
+                THEN IF New.le_time == New.di_time && New.le_ampm == New.di_ampm
+                    THEN RAISE EXCEPTION 'OVERLAP'
+                END IF; 
+            END IF;
+            END;
+            $$
+            LANGUAGE plpgsql;
+
+            CREATE TRIGGER handle_class_time
+            BEFORE INSERT OR UPDATE ON class
+            FOR EACH ROW EXECUTE PROCEDURE test();
+
+
             // Inside TRIGGER
             String str = "IF POSITION('M' in New.le.day ) > 0 && POSITION('M' in New.di.day) > 0 THEN IF New.le.time == New.di.time && New.le.ampm == New.di.ampm THEN RAISE EXCEPTION 'FAILED' END IF; END IF;"
 
