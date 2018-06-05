@@ -51,11 +51,10 @@
             // First check if comparing Lecture and Discussion works correctly
             
             // Inside TRIGGER
-            String str = "IF POSITION('M' in " + request.getParameter('le.day') + " > 0 && 'M' in request.getParameter('di.day') > 0) THEN IF request.getParameter('le.time') == request.getParameter('di.time') && request.getParameter('le.ampm') == request.getParameter('le.ampm') THEN";
-                    // OVERLAP
+            String str = "IF POSITION('M' in New.le.day ) > 0 && POSITION('M' in New.di.day) > 0 THEN IF New.le.time == New.di.time && New.le.ampm == New.di.ampm THEN RAISE EXCEPTION 'FAILED' END IF; END IF;"
 
-
-            if(request.getParameter('le') != request.getParameter('di')) {
+            stmatenet.executeQuery(str);
+            if(NO OVERLAP) {
                 int rowCount = pstmt.executeUpdate();
 
                 // Commit transaction
