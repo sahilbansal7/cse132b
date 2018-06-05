@@ -54,30 +54,21 @@
             RETURNS trigger AS
             $$
             BEGIN
-            IF POSITION('M' in New.le_day ) > 0 AND POSITION('M' in New.di_day) > 0
-                THEN IF New.le_time = New.di_time AND New.le_ampm = New.di_ampm
+            //IF New.di_day <> NULL THEN
+                IF POSITION('M' in New.le_day ) > 0 AND POSITION('M' in New.di_day) > 0 AND New.le_time = New.di_time AND New.le_ampm = New.di_ampm
                     THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.le_day, New.le_time, New.le_ampm, New.di_day, New.di_time, New.di_ampm;
-                END IF; 
-            ELSIF POSITION('Tue' in New.le_day ) > 0 AND POSITION('Tue' in New.di_day) > 0
-                THEN IF New.le_time = New.di_time AND New.le_ampm = New.di_ampm
+                ELSIF POSITION('Tue' in New.le_day ) > 0 AND POSITION('Tue' in New.di_day) > 0 AND New.le_time = New.di_time AND New.le_ampm = New.di_ampm
                     THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.le_day, New.le_time, New.le_ampm, New.di_day, New.di_time, New.di_ampm;
-                END IF; 
-            ELSIF POSITION('W' in New.le_day ) > 0 AND POSITION('W' in New.di_day) > 0
-                THEN IF New.le_time = New.di_time AND New.le_ampm = New.di_ampm
+                ELSIF POSITION('W' in New.le_day ) > 0 AND POSITION('W' in New.di_day) > 0 AND New.le_time = New.di_time AND New.le_ampm = New.di_ampm
                     THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.le_day, New.le_time, New.le_ampm, New.di_day, New.di_time, New.di_ampm;
-                END IF; 
-            ELSIF POSITION('Thu' in New.le_day ) > 0 AND POSITION('Thu' in New.di_day) > 0
-                THEN IF New.le_time = New.di_time AND New.le_ampm = New.di_ampm
+                ELSIF POSITION('Thu' in New.le_day ) > 0 AND POSITION('Thu' in New.di_day) > 0 AND New.le_time = New.di_time AND New.le_ampm = New.di_ampm
                     THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.le_day, New.le_time, New.le_ampm, New.di_day, New.di_time, New.di_ampm;
-                END IF; 
-            ELSIF POSITION('F' in New.le_day ) > 0 AND POSITION('F' in New.di_day) > 0
-                THEN IF New.le_time = New.di_time AND New.le_ampm = New.di_ampm
+                ELSIF POSITION('F' in New.le_day ) > 0 AND POSITION('F' in New.di_day) > 0 AND New.le_time = New.di_time AND New.le_ampm = New.di_ampm
                     THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.le_day, New.le_time, New.le_ampm, New.di_day, New.di_time, New.di_ampm;
-                END IF; 
-            ELSE 
-                RAISE NOTICE 'Insertion Successful';
-                RETURN NEW;
-            END IF;
+                ELSE
+                    RAISE NOTICE 'Success';
+                    RETURN NEW;
+                END IF;
             END;
             $$
             LANGUAGE plpgsql;
