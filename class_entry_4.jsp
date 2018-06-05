@@ -27,7 +27,6 @@
         String action = request.getParameter("action");
         // Check if an insertion is requested
         if (action != null && action.equals("insert")) {
-
             // Begin transaction
             conn.setAutoCommit(false);
             
@@ -35,7 +34,6 @@
             // INSERT the student attributes INTO the Faculty table.
             PreparedStatement pstmt = conn.prepareStatement(
                 "INSERT INTO class VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            out.println("first");
 
             pstmt.setString(1, request.getParameter("title"));
             pstmt.setInt(2, Integer.parseInt(request.getParameter("section_id")));
@@ -56,8 +54,6 @@
             pstmt.setString(17, request.getParameter("lab_day"));
             pstmt.setString(18, request.getParameter("lab_time"));
             pstmt.setString(19, request.getParameter("lab_ampm"));
-            out.println(pstmt);
-            out.println("LOL");
             int rowCount = pstmt.executeUpdate();
 
             // Commit transaction
