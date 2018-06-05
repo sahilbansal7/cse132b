@@ -56,23 +56,23 @@
             BEGIN
             IF POSITION('M' in New.le_day ) > 0 AND POSITION('M' in New.di_day) > 0
                 THEN IF New.le_time == New.di_time AND New.le_ampm == New.di_ampm
-                    THEN RAISE EXCEPTION 'OVERLAP';
+                    THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.le_day, New.le_time, New.le_ampm, New.di_day, New.di_time, New.di_ampm;
                 END IF; 
             ELSE IF POSITION('Tue' in New.le_day ) > 0 AND POSITION('Tue' in New.di_day) > 0
                 THEN IF New.le_time == New.di_time AND New.le_ampm == New.di_ampm
-                    THEN RAISE EXCEPTION 'OVERLAP';
+                    THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.le_day, New.le_time, New.le_ampm, New.di_day, New.di_time, New.di_ampm;
                 END IF; 
             ELSE IF POSITION('W' in New.le_day ) > 0 AND POSITION('W' in New.di_day) > 0
                 THEN IF New.le_time == New.di_time AND New.le_ampm == New.di_ampm
-                    THEN RAISE EXCEPTION 'OVERLAP';
+                    THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.le_day, New.le_time, New.le_ampm, New.di_day, New.di_time, New.di_ampm;
                 END IF; 
             ELSE IF POSITION('Thu' in New.le_day ) > 0 AND POSITION('Thu' in New.di_day) > 0
                 THEN IF New.le_time == New.di_time AND New.le_ampm == New.di_ampm
-                    THEN RAISE EXCEPTION 'OVERLAP';
+                    THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.le_day, New.le_time, New.le_ampm, New.di_day, New.di_time, New.di_ampm;
                 END IF; 
             ELSE IF POSITION('F' in New.le_day ) > 0 AND POSITION('F' in New.di_day) > 0
                 THEN IF New.le_time == New.di_time AND New.le_ampm == New.di_ampm
-                    THEN RAISE EXCEPTION 'OVERLAP';
+                    THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.le_day, New.le_time, New.le_ampm, New.di_day, New.di_time, New.di_ampm;
                 END IF; 
             ELSE 
                 RAISE NOTICE 'Insertion Successful';
