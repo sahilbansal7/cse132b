@@ -49,10 +49,14 @@
             Statement statement4 = conn.createStatement();
             Statement statement5 = conn.createStatement();
             String query3 = "SELECT DISTINCT(c.*), pc.grade, cs.units FROM class c, course cs, past_classes pc WHERE " +str_ssn + " = pc.s_ssn AND c.section_id = pc.section_id AND c.co_number = pc.co_number AND c.co_number = cs.co_number ORDER BY c.quarter, c.year DESC";
-            out.println(query3);
             rs_three = statement3.executeQuery(query3);
-            rs_four = statement4.executeQuery ("SELECT ROUND(AVG(gdc.number_grade)) FROM student s, past_classes pc, grade_conversion gdc WHERE s.s_ssn = pc.s_ssn AND s.s_ssn = " + str_ssn + " AND pc.grade != 'IN' AND pc.grade = gdc.LETTER_GRADE");
-            rs_five = statement5.executeQuery("SELECT ROUND(AVG(gdc.number_grade)), pc.quarter, pc.year FROM student s, past_classes pc, grade_conversion gdc WHERE s.s_ssn = pc.s_ssn AND s.s_ssn = " + str_ssn + " AND grade != 'IN' AND pc.grade = gdc.LETTER_GRADE GROUP BY quarter, year");
+            String query4 = "SELECT SUM(gdc.number_grade * c.units) / SUM(c.units) as round FROM student s, past_classes pc, grade_conversion gdc, course c WHERE c.co_number = pc.co_number AND s.s_ssn = pc.s_ssn AND s.s_ssn = " + str_ssn + " AND pc.grade != 'IN' AND pc.grade = gdc.LETTER_GRADE";
+            out.println(query4);
+            rs_four = statement4.executeQuery (query4);
+            String query5 = "SELECT SUM(gdc.number_grade)/COUNT(pc.grade) as round, pc.quarter, pc.year FROM student s, past_classes pc, grade_conversion gdc WHERE s.s_ssn = pc.s_ssn AND s.s_ssn = " + str_ssn + " AND grade != 'IN' AND pc.grade = gdc.LETTER_GRADE GROUP BY quarter, year";
+            out.println("IDUHUFSDSFSFSF");
+            out.println(query5);
+            rs_five = statement5.executeQuery(query5);
         }
 %>
 
@@ -227,7 +231,7 @@
 %>
     <tr>
         <td>
-            <input value="<%= rs_four.getInt("round") %>" 
+            <input value="<%= rs_four.getFloat("round") %>" 
                 name="round" size="10">
         </td>
     </tr>
@@ -248,7 +252,7 @@
 %>
     <tr>
         <td>
-            <input value="<%= rs_five.getInt("round") %>" 
+            <input value="<%= rs_five.getFloat("round") %>" 
                 name="round" size="10">
         </td>
         <td>

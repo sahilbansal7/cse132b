@@ -64,7 +64,6 @@
 %>
 
 
-
 <%
     String action = request.getParameter("action");
     ResultSet rs_three = null;
@@ -75,9 +74,9 @@
         String start_date = request.getParameter("start_date");
         String end_date = request.getParameter("end_date");
         Statement statement3 = conn.createStatement();
-        String query3 = "SELECT (m.month, m.day, 'Monday', rsh.fully, c.le_ampm) as review_session FROM student s, class c, faculty f, course_enrollment ce, review_session_hours rsh, may m WHERE s.s_ssn = ce.s_ssn AND m.day >= " + start_date + " AND m.day <= " + end_date + " AND ce.s_ssn = s.s_ssn AND c.le_time != rsh.beg AND c.le_ampm != rsh.ampm AND f.f_name = '" + f_n + "' AND f.f_name = c.f_name AND ce.section_id = " + str_s_id + " group by m.month, m.day, rsh.fully, c.le_ampm order by day, fully";
+        String query3 = "SELECT m.month, m.day, rsh.fully, c.le_ampm FROM student s, class c, faculty f, course_enrollment ce, review_session_hours rsh, may m WHERE s.s_ssn = ce.s_ssn AND m.day >= " + start_date + " AND m.day <= " + end_date + " AND ce.s_ssn = s.s_ssn AND c.le_time != rsh.beg AND c.le_ampm = rsh.ampm AND f.f_name = '" + f_n + "' AND f.f_name = c.f_name AND ce.co_number = c.co_number AND ce.section_id = " + str_s_id + " group by m.month, m.day, rsh.fully, c.le_ampm order by day, fully";
         out.println(query3);
-        //rs_three = statement3.executeQuery(query3);
+        rs_three = statement3.executeQuery(query3);
     }
 %>
 
@@ -195,7 +194,10 @@
 <!-- REPORT -->
 <table border="1">
         <tr>
-            <th> Review_Session </th>
+            <th> Month </th>
+            <th> day </th>
+            <th> fully </th>
+            <th> le_ampm </th>
         </tr>
 
 <%
@@ -206,8 +208,20 @@
 
         <tr>
                 <td>
-                    <input value="<%= rs_three.getString("review_session") %>" 
-                        name="review_session" size="10">
+                    <input value="<%= rs_three.getString("month") %>" 
+                        name="month" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getInt("day") %>" 
+                        name="day" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("fully") %>" 
+                        name="fully" size="10">
+                </td>
+                <td>
+                    <input value="<%= rs_three.getString("le_ampm") %>" 
+                        name="le_ampm" size="10">
                 </td>
         </tr>
 <%
