@@ -62,6 +62,47 @@
         }
 %>
 
+<%-- -------- UPDATE Code -------- --%>
+<%
+        // Check if an update is requested
+        if (action != null && action.equals("update")) {
+
+            // Begin transaction
+            conn.setAutoCommit(false);
+                        
+            PreparedStatement pstmt = conn.prepareStatement(
+                "UPDATE class SET title=?, section_id=?, le_day=?, enroll_limit=?, di_mandatory=?, f_name=?, co_number=?, " + 
+                "review_session=?, waitlist=?, quarter=?, year=?, le_time=?, le_ampm=?, di_day=?, di_time=?, di_ampm=?, lab_day=?, " +
+                "lab_time=?, lab_ampm=? WHERE section_id = ? and co_number = ?");
+
+            pstmt.setString(1, request.getParameter("title"));
+            pstmt.setInt(2, Integer.parseInt(request.getParameter("section_id")));
+            pstmt.setString(3, request.getParameter("le_day"));
+            pstmt.setInt(4, Integer.parseInt(request.getParameter("enroll_limit"))); 
+            pstmt.setInt(5, Integer.parseInt(request.getParameter("di_mandatory")));
+            pstmt.setString(6, request.getParameter("f_name"));
+            pstmt.setString(7, request.getParameter("co_number"));
+            pstmt.setInt(8, Integer.parseInt(request.getParameter("review_session")));
+            pstmt.setInt(9, Integer.parseInt(request.getParameter("waitlist")));
+            pstmt.setString(10, request.getParameter("quarter"));
+            pstmt.setInt(11, Integer.parseInt(request.getParameter("year")));
+            pstmt.setString(12, request.getParameter("le_time"));
+            pstmt.setString(13, request.getParameter("le_ampm"));
+            pstmt.setString(14, request.getParameter("di_day"));
+            pstmt.setString(15, request.getParameter("di_time"));
+            pstmt.setString(16, request.getParameter("di_ampm"));
+            pstmt.setString(17, request.getParameter("lab_day"));
+            pstmt.setString(18, request.getParameter("lab_time"));
+            pstmt.setString(19, request.getParameter("lab_ampm"));
+            pstmt.setInt(20, Integer.parseInt(request.getParameter("section_id")));
+            pstmt.setString(21, request.getParameter("co_number"));
+            int rowCount = pstmt.executeUpdate();
+
+            // Commit transaction
+                conn.commit();
+            conn.setAutoCommit(true);
+        }
+%>
 
 <%-- -------- SELECT Statement Code -------- --%>
 <%
@@ -142,7 +183,7 @@
         <tr>
             <form action="class_entry_4.jsp" method="get">
 
-                <%-- Get the SSN, which is a number --%>
+                <input type="hidden" value="update" name="action">
                 <td>
                     <input value="<%= rs.getString("title") %>" 
                         name="title" size="10">
@@ -222,6 +263,9 @@
                 <td>
                     <input value="<%= rs.getString("lab_ampm") %>" 
                         name="lab_ampm" size="10">
+                </td>
+                <td>
+                    <input type="submit" value="Update">
                 </td>
 
 
