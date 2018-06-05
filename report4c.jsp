@@ -1,3 +1,4 @@
+SELECT POSITION('M' in OLD.le_day WHERE OLD.f_name = NEW.f_name) > 0
 <%
 
 CREATE OR REPLACE FUNCTION third()
