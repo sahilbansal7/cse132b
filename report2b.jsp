@@ -75,7 +75,7 @@
         String start_date = request.getParameter("start_date");
         String end_date = request.getParameter("end_date");
         Statement statement3 = conn.createStatement();
-        String query3 = "SELECT m.month, m.day, 'Monday', rsh.fully, c.le_ampm FROM student s, class c, faculty f, course_enrollment ce, review_session_hours rsh, may m WHERE s.s_ssn = ce.s_ssn AND m.day >= " + start_date + " AND m.day <= " + end_date + " AND ce.s_ssn = s.s_ssn AND c.le_time != rsh.beg AND c.le_ampm != rsh.ampm AND f.f_name = '" + f_n + "' AND f.f_name = c.f_name AND ce.section_id = " + str_s_id + " group by m.month, m.day, rsh.fully, c.le_ampm order by day, fully";
+        String query3 = "SELECT (m.month, m.day, 'Monday', rsh.fully, c.le_ampm) as review_session FROM student s, class c, faculty f, course_enrollment ce, review_session_hours rsh, may m WHERE s.s_ssn = ce.s_ssn AND m.day >= " + start_date + " AND m.day <= " + end_date + " AND ce.s_ssn = s.s_ssn AND c.le_time != rsh.beg AND c.le_ampm != rsh.ampm AND f.f_name = '" + f_n + "' AND f.f_name = c.f_name AND ce.section_id = " + str_s_id + " group by m.month, m.day, rsh.fully, c.le_ampm order by day, fully";
         out.println(query3);
         //rs_three = statement3.executeQuery(query3);
     }
