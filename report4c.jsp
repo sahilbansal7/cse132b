@@ -1,4 +1,21 @@
-SELECT POSITION('M' in OLD.le_day WHERE OLD.f_name = NEW.f_name) > 0
+CREATE OR REPLACE FUNCTION third()
+RETURNS trigger AS
+$$
+BEGIN
+
+IF POSITION('M' in OLD.le_day WHERE OLD.f_name = NEW.f_name) > 0
+	RAISE EXCEPTION 'Hi';
+ELSE 
+    RAISE NOTICE 'Assigning Professor Completed';
+	RETURN NEW;
+END IF;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER handle_professor
+BEFORE INSERT OR UPDATE ON class
+FOR EACH ROW EXECUTE PROCEDURE third();
 <%
 
 CREATE OR REPLACE FUNCTION third()
