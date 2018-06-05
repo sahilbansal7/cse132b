@@ -53,8 +53,9 @@
             CREATE OR REPLACE FUNCTION first()
             RETURNS trigger AS
             $$
-            BEGIN
-            //IF New.di_day <> NULL THEN
+            
+            IF New.di_day <> NULL THEN
+                // discussion exists
                 IF POSITION('M' in New.le_day ) > 0 AND POSITION('M' in New.di_day) > 0 AND New.le_time = New.di_time AND New.le_ampm = New.di_ampm
                     THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.le_day, New.le_time, New.le_ampm, New.di_day, New.di_time, New.di_ampm;
                 ELSIF POSITION('Tue' in New.le_day ) > 0 AND POSITION('Tue' in New.di_day) > 0 AND New.le_time = New.di_time AND New.le_ampm = New.di_ampm
@@ -66,9 +67,41 @@
                 ELSIF POSITION('F' in New.le_day ) > 0 AND POSITION('F' in New.di_day) > 0 AND New.le_time = New.di_time AND New.le_ampm = New.di_ampm
                     THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.le_day, New.le_time, New.le_ampm, New.di_day, New.di_time, New.di_ampm;
                 ELSE
-                    RAISE NOTICE 'Success';
-                    RETURN NEW;
                 END IF;
+
+                IF New.lab_day <> NULL THEN
+                    // discussion & lab exist
+                    IF POSITION('M' in New.di_day ) > 0 AND POSITION('M' in New.lab_day) > 0 AND New.di_time = New.lab_time AND New.di_ampm = New.lab_ampm
+                        THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.di_day, New.di_time, New.di_ampm, New.lab_day, New.lab_time, New.lab_ampm;
+                    ELSIF POSITION('Tue' in New.di_day ) > 0 AND POSITION('Tue' in New.lab_day) > 0 AND New.di_time = New.lab_time AND New.di_ampm = New.lab_ampm
+                        THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.di_day, New.di_time, New.di_ampm, New.lab_day, New.lab_time, New.lab_ampm;
+                    ELSIF POSITION('W' in New.di_day ) > 0 AND POSITION('W' in New.lab_day) > 0 AND New.di_time = New.lab_time AND New.di_ampm = New.lab_ampm
+                        THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.di_day, New.di_time, New.di_ampm, New.lab_day, New.lab_time, New.lab_ampm;
+                    ELSIF POSITION('Thu' in New.di_day ) > 0 AND POSITION('Thu' in New.lab_day) > 0 AND New.di_time = New.lab_time AND New.di_ampm = New.lab_ampm
+                        THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.di_day, New.di_time, New.di_ampm, New.lab_day, New.lab_time, New.lab_ampm;
+                    ELSIF POSITION('F' in New.di_day ) > 0 AND POSITION('F' in New.lab_day) > 0 AND New.di_time = New.lab_time AND New.di_ampm = New.lab_ampm
+                        THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.di_day, New.di_time, New.di_ampm, New.lab_day, New.lab_time, New.lab_ampm;
+                END IF;
+            END IF;
+
+            IF New.lab_day <> NULL THEN
+                // discusssion doesnt but lab exists
+                IF POSITION('M' in New.le_day ) > 0 AND POSITION('M' in New.lab_day) > 0 AND New.le_time = New.lab_time AND New.le_ampm = New.lab_ampm
+                    THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.le_day, New.le_time, New.le_ampm, New.lab_day, New.lab_time, New.lab_ampm;
+                ELSIF POSITION('Tue' in New.le_day ) > 0 AND POSITION('Tue' in New.lab_day) > 0 AND New.le_time = New.lab_time AND New.le_ampm = New.lab_ampm
+                    THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.le_day, New.le_time, New.le_ampm, New.lab_day, New.lab_time, New.lab_ampm;
+                ELSIF POSITION('W' in New.le_day ) > 0 AND POSITION('W' in New.lab_day) > 0 AND New.le_time = New.lab_time AND New.le_ampm = New.lab_ampm
+                    THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.le_day, New.le_time, New.le_ampm, New.lab_day, New.lab_time, New.lab_ampm;
+                ELSIF POSITION('Thu' in New.le_day ) > 0 AND POSITION('Thu' in New.lab_day) > 0 AND New.le_time = New.lab_time AND New.le_ampm = New.lab_ampm
+                    THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.le_day, New.le_time, New.le_ampm, New.lab_day, New.lab_time, New.lab_ampm;
+                ELSIF POSITION('F' in New.le_day ) > 0 AND POSITION('F' in New.lab_day) > 0 AND New.le_time = New.lab_time AND New.le_ampm = New.lab_ampm
+                    THEN RAISE EXCEPTION 'Overlap between % % % and % % %', New.le_day, New.le_time, New.le_ampm, New.lab_day, New.lab_time, New.lab_ampm;
+                ELSE
+                END IF;
+            END IF;
+
+            RAISE NOTICE 'SUCCESS';
+            RETURN NEW;
             END;
             $$
             LANGUAGE plpgsql;
