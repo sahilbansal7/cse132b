@@ -58,6 +58,24 @@
                 THEN IF New.le_time == New.di_time && New.le_ampm == New.di_ampm
                     THEN RAISE EXCEPTION 'OVERLAP'
                 END IF; 
+            ELSE IF POSITION('Tue' in New.le_day ) > 0 && POSITION('Tue' in New.di_day) > 0
+                THEN IF New.le_time == New.di_time && New.le_ampm == New.di_ampm
+                    THEN RAISE EXCEPTION 'OVERLAP'
+                END IF; 
+            ELSE IF POSITION('W' in New.le_day ) > 0 && POSITION('W' in New.di_day) > 0
+                THEN IF New.le_time == New.di_time && New.le_ampm == New.di_ampm
+                    THEN RAISE EXCEPTION 'OVERLAP'
+                END IF; 
+            ELSE IF POSITION('Thu' in New.le_day ) > 0 && POSITION('Thu' in New.di_day) > 0
+                THEN IF New.le_time == New.di_time && New.le_ampm == New.di_ampm
+                    THEN RAISE EXCEPTION 'OVERLAP'
+                END IF; 
+            ELSE IF POSITION('F' in New.le_day ) > 0 && POSITION('F' in New.di_day) > 0
+                THEN IF New.le_time == New.di_time && New.le_ampm == New.di_ampm
+                    THEN RAISE EXCEPTION 'OVERLAP'
+                END IF; 
+            ELSE 
+                RAISE NOTICE 'Insertion Successful'
             END IF;
             END;
             $$
@@ -65,7 +83,7 @@
 
             CREATE TRIGGER handle_class_time
             BEFORE INSERT OR UPDATE ON class
-            FOR EACH ROW EXECUTE PROCEDURE test();
+            FOR EACH ROW EXECUTE PROCEDURE first();
 
 
             // Inside TRIGGER
