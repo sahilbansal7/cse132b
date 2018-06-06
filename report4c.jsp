@@ -39,10 +39,11 @@ BEGIN
 					THEN RAISE EXCEPTION 'Time Conflict';
 				END IF;
 			END LOOP;
-	ELSE 
-	    RAISE NOTICE 'Assigning Professor Completed';
-    	RETURN NEW;
+	ELSE
 	END IF;
+
+    RAISE NOTICE 'Assigning Professor Completed';
+	RETURN NEW;
 END;
 $$
 LANGUAGE plpgsql;
