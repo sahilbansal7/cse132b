@@ -1,27 +1,44 @@
-<%
-
 CREATE OR REPLACE FUNCTION third()
 RETURNS trigger AS
 $$
+declare
+    temprow record;
 BEGIN
-	FOR temprow IN
-		SELECT le_day FROM class WHERE f_name = NEW.f_name
-		LOOP 
-			IF POSITION ('M' in temprow.le_day) > 0 AND NEW.le_time = temprow.le.time AND NEW.le_ampm = temprow.ampm
-				THEN RAISE EXCEPTION 'FAILED';
-			ENDIF
-		END LOOP;
-		
-	IF POSITION('M' in New.le_day ) > 0 AND POSITION('M' in (SELECT le_day FROM class WHERE f_name = NEW.f_name AND le_time = NEW.le_time AND le_ampm = NEW.ampm)) > 0
-	    THEN RAISE EXCEPTION 'Time Conflict';
-	ELSIF POSITION('Tue' in New.le_day ) > 0 AND POSITION('Tue' in (SELECT le_day FROM class WHERE f_name = NEW.f_name AND le_time = NEW.le_time AND le_ampm = NEW.ampm)) > 0
-	    THEN RAISE EXCEPTION 'Time Conflict';
-	ELSIF POSITION('W' in New.le_day ) > 0 AND POSITION('W' in (SELECT le_day FROM class WHERE f_name = NEW.f_name AND le_time = NEW.le_time AND le_ampm = NEW.ampm)) > 0
-	    THEN RAISE EXCEPTION 'Time Conflict';
-	ELSIF POSITION('Thu' in New.le_day ) > 0 AND POSITION('Thu' in (SELECT le_day FROM class WHERE f_name = NEW.f_name AND le_time = NEW.le_time AND le_ampm = NEW.ampm)) > 0
-	    THEN RAISE EXCEPTION 'Time Conflict';
-	ELSIF POSITION('F' in New.le_day ) > 0 AND POSITION('F' in (SELECT le_day FROM class WHERE f_name = NEW.f_name AND le_time = NEW.le_time AND le_ampm = NEW.ampm)) > 0
-	    THEN RAISE EXCEPTION 'Time Conflict';
+	IF POSITION('M' in New.le_day ) > 0 THEN 
+		FOR temprow IN SELECT * FROM class WHERE f_name = NEW.f_name
+			LOOP 
+				IF POSITION ('M' in temprow.le_day) > 0 AND NEW.le_time = temprow.le_time AND NEW.le_ampm = temprow.le_ampm
+					THEN RAISE EXCEPTION 'Time Conflict';
+				END IF;
+			END LOOP;
+	ELSIF POSITION('Tue' in New.le_day ) > 0 THEN 
+		FOR temprow IN SELECT * FROM class WHERE f_name = NEW.f_name
+			LOOP 
+				IF POSITION ('Tue' in temprow.le_day) > 0 AND NEW.le_time = temprow.le_time AND NEW.le_ampm = temprow.le_ampm
+					THEN RAISE EXCEPTION 'Time Conflict';
+				END IF;
+			END LOOP;
+	ELSIF POSITION('W' in New.le_day ) > 0 THEN 
+		FOR temprow IN SELECT * FROM class WHERE f_name = NEW.f_name
+			LOOP 
+				IF POSITION ('W' in temprow.le_day) > 0 AND NEW.le_time = temprow.le_time AND NEW.le_ampm = temprow.le_ampm
+					THEN RAISE EXCEPTION 'Time Conflict';
+				END IF;
+			END LOOP;
+	ELSIF POSITION('Thu' in New.le_day ) > 0 THEN 
+		FOR temprow IN SELECT * FROM class WHERE f_name = NEW.f_name
+			LOOP 
+				IF POSITION ('Thu' in temprow.le_day) > 0 AND NEW.le_time = temprow.le_time AND NEW.le_ampm = temprow.le_ampm
+					THEN RAISE EXCEPTION 'Time Conflict';
+				END IF;
+			END LOOP;
+	ELSIF POSITION('F' in New.le_day ) > 0 THEN 
+		FOR temprow IN SELECT * FROM class WHERE f_name = NEW.f_name
+			LOOP 
+				IF POSITION ('F' in temprow.le_day) > 0 AND NEW.le_time = temprow.le_time AND NEW.le_ampm = temprow.le_ampm
+					THEN RAISE EXCEPTION 'Time Conflict';
+				END IF;
+			END LOOP;
 	ELSE 
 	    RAISE NOTICE 'Assigning Professor Completed';
     	RETURN NEW;
