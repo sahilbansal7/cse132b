@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION third()
+<% CREATE OR REPLACE FUNCTION third()
 RETURNS trigger AS
 $$
 declare
