@@ -49,6 +49,33 @@
         }
 %>
 
+<%-- -------- UPDATE Code -------- --%>
+<%
+        // Check if an update is requested
+        if (action != null && action.equals("update")) {
+            out.println("jisjiasa");
+            // Begin transaction
+            conn.setAutoCommit(false);
+                        
+            PreparedStatement pstmt = conn.prepareStatement(
+                "UPDATE course_enrollment SET s_ssn = ?, co_number = ?, section_id = ?, units = ? WHERE section_id = ? and co_number = ? and s_ssn = ?");
+
+            pstmt.setInt(1, Integer.parseInt(request.getParameter("s_ssn")));
+            pstmt.setString(2, request.getParameter("co_number"));
+            pstmt.setInt(3, Integer.parseInt(request.getParameter("section_id")));
+            pstmt.setInt(4, Integer.parseInt(request.getParameter("units")));
+            pstmt.setInt(5, Integer.parseInt(request.getParameter("section_id")));
+            pstmt.setString(6, request.getParameter("co_number"));
+            pstmt.setInt(7, Integer.parseInt(request.getParameter("s_ssn")));
+            int rowCount = pstmt.executeUpdate();
+            out.println(pstmt);
+
+            // Commit transaction
+                conn.commit();
+            conn.setAutoCommit(true);
+        }
+%>
+
 
 <%-- -------- SELECT Statement Code -------- --%>
 <%
@@ -70,7 +97,7 @@
                <th>Unit</th>
            </tr>
            <tr>
-               <form action="course_enrollment.jsp" method="get">
+               <form action="course_enrollment_4.jsp" method="get">
                    <input type="hidden" value="insert" name="action">
                    <th><input value="" name="s_ssn" size="10"></th>
                    <th><input value="" name="co_number" size="10"></th>
@@ -89,7 +116,8 @@
 %>
 
         <tr>
-            <form action="course_enrollment.jsp" method="get">
+            <form action="course_enrollment_4.jsp" method="get">
+                <input type="hidden" value="update" name="action">
 
                 <%-- Get the SSN, which is a number --%>
                 <td>
@@ -110,6 +138,9 @@
                 <td>
                     <input value="<%= rs.getInt("units") %>" 
                         name="units" size="15">
+                </td>
+                <td>
+                    <input type="submit" value="Update">
                 </td>
             </form>
         </tr>
