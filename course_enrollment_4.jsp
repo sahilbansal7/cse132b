@@ -58,15 +58,14 @@
             conn.setAutoCommit(false);
                         
             PreparedStatement pstmt = conn.prepareStatement(
-                "UPDATE course_enrollment SET s_ssn = ?, co_number = ?, section_id = ?, units = ? WHERE section_id = ? and co_number = ? and s_ssn = ?");
+                "UPDATE course_enrollment SET s_ssn = ?, co_number = ?, section_id = ?, units = ? WHERE section_id = ? and co_number = ?.");
 
             pstmt.setInt(1, Integer.parseInt(request.getParameter("s_ssn")));
             pstmt.setString(2, request.getParameter("co_number"));
             pstmt.setInt(3, Integer.parseInt(request.getParameter("section_id")));
             pstmt.setInt(4, Integer.parseInt(request.getParameter("units")));
-            pstmt.setInt(5, Integer.parseInt(request.getParameter("section_id")));
-            pstmt.setString(6, request.getParameter("co_number"));
-            pstmt.setInt(7, Integer.parseInt(request.getParameter("s_ssn")));
+            pstmt.setInt(5, Integer.parseInt(request.getParameter("new_section_id")));
+            pstmt.setString(6, request.getParameter("new_co_name"));
             int rowCount = pstmt.executeUpdate();
             out.println(pstmt);
 
@@ -95,6 +94,8 @@
                <th>Course Name</th>
                <th>Section Number</th>
                <th>Unit</th>
+               <th>New Course Name</th>
+               <th>New Section ID</th>
            </tr>
            <tr>
                <form action="course_enrollment_4.jsp" method="get">
@@ -138,6 +139,15 @@
                 <td>
                     <input value="<%= rs.getInt("units") %>" 
                         name="units" size="15">
+                </td>
+                <td>
+                    <input value=""
+                        name="new_course_name" size="15">
+                </td>
+
+                <td>
+                    <input value="" 
+                        name="new_section_id" size="15">
                 </td>
                 <td>
                     <input type="submit" value="Update">
