@@ -3,7 +3,7 @@ RETURNS trigger AS
 $$
 BEGIN
 
-IF POSITION('M' in OLD.le_day WHERE OLD.f_name = NEW.f_name) > 0
+IF POSITION('M' in OLD.le_day) > 0
 	RAISE EXCEPTION 'Hi';
 ELSE 
     RAISE NOTICE 'Assigning Professor Completed';
