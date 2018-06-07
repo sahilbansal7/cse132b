@@ -15,8 +15,6 @@ CREATE TABLE CPQG (
 CREATE TABLE CPG (
 	course varchar(15) NOT NULL,
 	professor varchar(40) NOT NULL,
-	quarter varchar(10) NOT NULL,
-	year varchar(10) NOT NULL,
 	a integer,
 	b integer,
 	c integer,
@@ -26,37 +24,61 @@ CREATE TABLE CPG (
 
 2. Load Data from Demo
 INSERT INTO CPQG (course, professor, quarter, year, a, b, c, d, other) VALUES 
-	('CSE8A', 'Justin Bieber', 'Winter', '2017', '1', '1', '', '', ''),
-	('CSE8A', 'Selena Gomez', 'Fall', '2017', '', '1', '', ''),
-	('CSE8A', 'Kelly Clarkson', 'Winter', '2018' '1', '1', '', '', ''),
-	('CSE105', 'Taylor Swift', 'Spring', '2017', '1', '1', '1', '', ''),
-	('CSE250A', 'Bjork', 'Winter', '2017', '', '', '1', '', ''),
-	('CSE250A', 'Bjork', 'Winter', '2018', '', '1', '', '1', '1'),
-	('CSE250B', 'Justin Bieber', 'Spring', '2017', '2', '', '', '', ''),
-	('CSE255', 'Justin Bieber', 'Winter', '2018', '', '2', '', '', '1'),
-	('CSE232A', 'Kelly Clarkson', 'Winter', '2018', '1', '', '', '', ''),
-	('CSE221', 'Justin Bieber', 'Fall', '2017', '2', '', '', '', ''),
-	('MAE107', 'Bjork', 'Fall', '2017', '', '1', '', '', ''),
-	('MAE108', 'Selena Gomez', 'Winter', '2017', '1', '1', '', '', ''),
-	('MAE108', 'Selena Gomez', 'Spring', '2017', '', '2', '', '', ''),
-	('PHIL10', 'Bjork', 'Winter', '2018', '2', '', '2', '', ''),
-	('PHIL165', 'Flo Rida', 'FALL', '2017', '', '', '', '1', '1'),
-	('PHIL165', 'Adam Levine', 'Winter', '2018', '1', '', '', '', '');
+	('CSE8A', 'Justin Bieber', 'Winter', '2017', 1, 1, 0, 0, 0),
+	('CSE8A', 'Selena Gomez', 'Fall', '2017', 0, 1, 0, 0),
+	('CSE8A', 'Kelly Clarkson', 'Winter', '2018' 1, 1, 0, 0, 0),
+	('CSE105', 'Taylor Swift', 'Spring', '2017', 1, 1, 1, 0, 0),
+	('CSE250A', 'Bjork', 'Winter', '2017', 0, 0, 1, 0, 0),
+	('CSE250A', 'Bjork', 'Winter', '2018', 0, 1, 0, 1, 1),
+	('CSE250B', 'Justin Bieber', 'Spring', '2017', 2, 0, 0, 0, 0),
+	('CSE255', 'Justin Bieber', 'Winter', '2018', 0, 2, 0, 0, 1),
+	('CSE232A', 'Kelly Clarkson', 'Winter', '2018', 1, 0, 0, 0, 0),
+	('CSE221', 'Justin Bieber', 'Fall', '2017', 2, 0, 0, 0, 0),
+	('MAE107', 'Bjork', 'Fall', '2017', 0, 1, 0, 0, 0),
+	('MAE108', 'Selena Gomez', 'Winter', '2017', 1, 1, 0, 0, 0),
+	('MAE108', 'Selena Gomez', 'Spring', '2017', 0, 2, 0, 0, 0),
+	('PHIL10', 'Bjork', 'Winter', '2018', 2, 0, 2, 0, 0),
+	('PHIL165', 'Flo Rida', 'FALL', '2017', 0, 0, 0, 1, 1),
+	('PHIL165', 'Adam Levine', 'Winter', '2018', 1, 0, 0, 0, 0);
 
 INSERT INTO CPG (course, professor, a, b, c, d, other) VALUES 
-	('CSE8A', 'Justin Bieber', '1', '1', '', '', ''),
-	('CSE8A', 'Selena Gomez', '', '1', '', ''),
-	('CSE8A', 'Kelly Clarkson', '1', '1', '', '', ''),
-	('CSE105', 'Taylor Swift', '1', '1', '1', '', ''),
-	('CSE250A', 'Bjork', '', '1', '1', '1', '1'),
-	('CSE250B', 'Justin Bieber', '2', '', '', '', ''),
-	('CSE255', 'Justin Bieber', '', '2', '', '', '1'),
-	('CSE232A', 'Kelly Clarkson', '1', '', '', '', ''),
-	('CSE221', 'Justin Bieber', '2', '', '', '', ''),
-	('MAE107', 'Bjork', '', '1', '', '', ''),
-	('MAE108', 'Selena Gomez', '1', '3', '', '', ''),
-	('PHIL10', 'Bjork', '2', '', '2', '', ''),
-	('PHIL165', 'Flo Rida', '', '', '', '1', '1'),
-	('PHIL165', 'Adam Levine', '1', '', '', '', '');
+	('CSE8A', 'Justin Bieber', 1, 1, 0, 0, 0),
+	('CSE8A', 'Selena Gomez', 0, 1, 0, 0),
+	('CSE8A', 'Kelly Clarkson', 1, 1, 0, 0, 0),
+	('CSE105', 'Taylor Swift', 1, 1, 1, 0, 0),
+	('CSE250A', 'Bjork', 0, 1, 1, 1, 1),
+	('CSE250B', 'Justin Bieber', 2, 0, 0, 0, 0),
+	('CSE255', 'Justin Bieber', 0, 2, 0, 0, 1),
+	('CSE232A', 'Kelly Clarkson', 1, 0, 0, 0, 0),
+	('CSE221', 'Justin Bieber', 2, 0, 0, 0, 0),
+	('MAE107', 'Bjork', 0, 1, 0, 0, 0),
+	('MAE108', 'Selena Gomez', 1, 3, 0, 0, 0),
+	('PHIL10', 'Bjork', 2, 0, 2, 0, 0),
+	('PHIL165', 'Flo Rida', 0, 0, 0, 1, 1),
+	('PHIL165', 'Adam Levine', 1, 0, 0, 0, 0);
 
 3. Rewrite queries using these tables 
+	SELECT a, b, c, d, other FROM CPQG WHERE course = INPUT.co_number AND quarter = INPUT.quarter AND year = INPUT.year AND professor = INPUT.f_name
+
+	SELECT a, b, c, d, other FROM CPG WHERE course =  INPUT.co_number AND professor = INPUT.f_name
+
+4. Create form for inserting/updating a student's grade.
+
+5. Write triggers for inserting/updating that incrementally update your two tables.
+	CREATE OR REPLACE FUNCTION second()
+	RETURNS trigger AS
+	$$
+	BEGIN
+	IF NEW.co_number = (SELECT co_number FROM class) AND NEW.section_id = (SELECT section_id FROM class) AND class.enroll_limit = (SELECT COUNT(*) FROM course_enrollment ce WHERE ce.co_number = NEW.co_number AND ce.section_id = NEW.section_id)
+	    THEN RAISE EXCEPTION 'Enrollment Limit Already Reached';
+	ELSE 
+	    RAISE NOTICE 'Insertion Successful'
+	END IF;
+	END;
+	$$
+	LANGUAGE plpgsql;
+
+	CREATE TRIGGER handle_class_time
+	BEFORE INSERT OR UPDATE ON course_enrollment
+	FOR EACH ROW EXECUTE PROCEDURE second(); 
+
