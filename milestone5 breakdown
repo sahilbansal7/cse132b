@@ -60,25 +60,80 @@ INSERT INTO CPG (co_number, f_name, a, b, c, d, other) VALUES
 3. Rewrite queries using these tables 
 	SELECT a, b, c, d, other FROM CPQG WHERE course = INPUT.co_number AND quarter = INPUT.quarter AND year = INPUT.year AND professor = INPUT.f_name
 
-	SELECT a, b, c, d, other FROM CPG WHERE course =  INPUT.co_number AND professor = INPUT.f_name
+	SELECT a, b, c, d, other FROM CPG WHERE course = INPUT.co_number AND professor = INPUT.f_name
 
 4. Create form for inserting/updating a student's grade.
 
 5. Write triggers for inserting/updating that incrementally update your two tables.
-	CREATE OR REPLACE FUNCTION second()
+
+	<%
+	// INSERT w/ s_ssn, co_number, quarter, year, section_id, grade, f_name
+	CREATE OR REPLACE FUNCTION ten()
 	RETURNS trigger AS
 	$$
 	BEGIN
-	IF NEW.co_number = (SELECT co_number FROM class) AND NEW.section_id = (SELECT section_id FROM class) AND class.enroll_limit = (SELECT COUNT(*) FROM course_enrollment ce WHERE ce.co_number = NEW.co_number AND ce.section_id = NEW.section_id)
-	    THEN RAISE EXCEPTION 'Enrollment Limit Already Reached';
-	ELSE 
-	    RAISE NOTICE 'Insertion Successful'
-	END IF;
+		IF NEW.grade = 'A+' OR NEW.grade = 'A' OR NEW.grade = 'A-' THEN 	
+			UPDATE CPQG SET a = a + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number AND quarter = NEW.quarter AND year = NEW.year;
+			UPDATE CPG SET a = a + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number;
+		ELSIF NEW.grade = 'B+' OR NEW.grade = 'B' OR NEW.grade = 'B-' THEN
+			UPDATE CPQG SET b = b + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number AND quarter = NEW.quarter AND year = NEW.year;
+			UPDATE CPG SET b = b + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number;
+		ELSIF NEW.grade = 'C+' OR NEW.grade = 'C' OR NEW.grade = 'C-' THEN
+			UPDATE CPQG SET c = c + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number AND quarter = NEW.quarter AND year = NEW.year;
+			UPDATE CPG SET c = c + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number;
+		ELSIF NEW.grade = 'D+' OR NEW.grade = 'D' OR NEW.grade = 'D-' THEN
+			UPDATE CPQG SET d = d + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number AND quarter = NEW.quarter AND year = NEW.year;
+			UPDATE CPG SET d = d + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number;
+		ELSIF NEW.grade = 'F' OR NEW.grade = 'IN' THEN
+			UPDATE CPQG SET other = other + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number AND quarter = NEW.quarter AND year = NEW.year;
+			UPDATE CPG SET other = other + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number;
+		ELSE 
+			RAISE EXCEPTION 'Invalid Grade Option';		 	 
+		END IF;
+
+		INSERT INTO past_classes(s_ssn, co_number, quarter, year, section_id, grade) VALUES(NEW.s_ssn, NEW.co_number, NEW.quarter, NEW.year, NEW.section_id, NEW.grade);
+		RETURN NEW;
 	END;
 	$$
 	LANGUAGE plpgsql;
 
-	CREATE TRIGGER handle_class_time
-	BEFORE INSERT OR UPDATE ON course_enrollment
-	FOR EACH ROW EXECUTE PROCEDURE second(); 
+	CREATE TRIGGER handle_grade_insert
+	BEFORE INSERT ON past_classes
+	FOR EACH ROW EXECUTE PROCEDURE ten();
+
+
+
+	CREATE OR REPLACE FUNCTION elev()
+	RETURNS trigger AS
+	$$
+	BEGIN
+		IF NEW.grade = 'A+' OR NEW.grade = 'A' OR NEW.grade = 'A-' THEN 	
+			UPDATE CPQG SET a = a + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number AND quarter = NEW.quarter AND year = NEW.year;
+			UPDATE CPG SET a = a + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number;
+		ELSIF NEW.grade = 'B+' OR NEW.grade = 'B' OR NEW.grade = 'B-' THEN
+			UPDATE CPQG SET b = b + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number AND quarter = NEW.quarter AND year = NEW.year;
+			UPDATE CPG SET b = b + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number;
+		ELSIF NEW.grade = 'C+' OR NEW.grade = 'C' OR NEW.grade = 'C-' THEN
+			UPDATE CPQG SET c = c + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number AND quarter = NEW.quarter AND year = NEW.year;
+			UPDATE CPG SET c = c + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number;
+		ELSIF NEW.grade = 'D+' OR NEW.grade = 'D' OR NEW.grade = 'D-' THEN
+			UPDATE CPQG SET d = d + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number AND quarter = NEW.quarter AND year = NEW.year;
+			UPDATE CPG SET d = d + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number;
+		ELSIF NEW.grade = 'F' OR NEW.grade = 'IN' THEN
+			UPDATE CPQG SET other = other + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number AND quarter = NEW.quarter AND year = NEW.year;
+			UPDATE CPG SET other = other + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number;
+		ELSE 
+			RAISE EXCEPTION 'Invalid Grade Option';		 	 
+		END IF;
+
+		UPDATE past_classes SET grade = NEW.grade;
+		RETURN NEW;
+	END;
+	$$
+	LANGUAGE plpgsql;
+
+	CREATE TRIGGER handle_grade_update
+	BEFORE UPDATE ON past_classes
+	FOR EACH ROW EXECUTE PROCEDURE elev(); 
+ 
 
