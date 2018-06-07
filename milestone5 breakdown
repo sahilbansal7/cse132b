@@ -108,7 +108,7 @@ INSERT INTO CPG (co_number, f_name, a, b, c, d, other) VALUES
 	$$
 	BEGIN
 		IF NEW.grade = 'A+' OR NEW.grade = 'A' OR NEW.grade = 'A-' THEN 	
-			UPDATE CPQG SET a = a + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number AND quarter = NEW.quarter AND year = NEW.year;
+			UPDATE CPQG SET a = a + 1 WHERE f_name = OLD.f_name AND co_number = OLD.co_number AND quarter = NEW.quarter AND year = NEW.year;
 			UPDATE CPG SET a = a + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number;
 		ELSIF NEW.grade = 'B+' OR NEW.grade = 'B' OR NEW.grade = 'B-' THEN
 			UPDATE CPQG SET b = b + 1 WHERE f_name = NEW.f_name AND co_number = NEW.co_number AND quarter = NEW.quarter AND year = NEW.year;
