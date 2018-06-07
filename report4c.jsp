@@ -1,4 +1,4 @@
-<% CREATE OR REPLACE FUNCTION third()
+CREATE OR REPLACE FUNCTION third()
 RETURNS trigger AS
 $$
 declare
@@ -51,7 +51,9 @@ LANGUAGE plpgsql;
 
 
 
-
+CREATE OR REPLACE FUNCTION third()
+RETURNS trigger AS
+$$
 declare
     temprow record;
 BEGIN
@@ -96,6 +98,8 @@ BEGIN
     RAISE NOTICE 'Assigning Professor Completed';
 	RETURN NEW;
 END;
+$$
+LANGUAGE plpgsql;
 
 
 
@@ -112,7 +116,9 @@ END;
 
 
 
-
+CREATE OR REPLACE FUNCTION third()
+RETURNS trigger AS
+$$
 declare
     temprow record;
 BEGIN
@@ -170,3 +176,5 @@ BEGIN
     RAISE NOTICE 'Assigning Professor Completed';
 	RETURN NEW;
 END;
+$$
+LANGUAGE plpgsql;
