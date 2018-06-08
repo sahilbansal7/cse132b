@@ -29,6 +29,14 @@
     Statement statement1 = conn.createStatement();
     ResultSet rs_one = statement1.executeQuery
         ("SELECT * FROM past_classes");
+
+    Statement statement2 = conn.createStatement();
+    ResultSet rs_two = statement2.executeQuery
+        ("SELECT * FROM cpg");
+
+    Statement statement3 = conn.createStatement();
+    ResultSet rs_three = statement3.executeQuery
+        ("SELECT * FROM cpqg");
 %>
 
 <%-- -------- INSERT Code -------- --%>
@@ -159,14 +167,137 @@
     </table>
 
 
+
+<h1>cpg</h1>
+<table border="1">
+        <tr>
+            <th>co_number</th>
+            <th>f_name</th>
+            <th>a</th>
+            <th>b</th>
+            <th>c</th>
+            <th>d</th>
+            <th>other</th>
+            
+        </tr>
+
+
+<%
+        while ( rs_two.next() ) {
+%>
+
+    <tr>
+    <td>
+        <input value="<%= rs_two.getString("co_number") %>" 
+            name="co_number" size="10">
+    </td>
+    <td>
+        <input value="<%= rs_two.getString("f_name") %>" 
+            name="f_name" size="10">
+    </td>
+    <td>
+        <input value="<%= rs_two.getString("a") %>" 
+            name="a" size="10">
+    </td>
+    <td>
+        <input value="<%= rs_two.getString("b") %>" 
+            name="b" size="10">
+    </td>
+    <td>
+        <input value="<%= rs_two.getString("c") %>" 
+            name="c" size="10">
+    </td>
+    <td>
+        <input value="<%= rs_two.getString("d") %>" 
+            name="d" size="10">
+    </td>
+    <td>
+        <input value="<%= rs_two.getString("other") %>" 
+            name="other" size="10">
+    </td>
+    </tr>
+<%
+        }
+%>
+    </table>
+
+
+
+
+
+<h1>cpqg</h1>
+<table border="1">
+        <tr>
+            <th>co_number</th>
+            <th>f_name</th>
+            <th>quarter</th>
+            <th>year</th>
+            <th>a</th>
+            <th>b</th>
+            <th>c</th>
+            <th>d</th>
+            <th>other</th>    
+        </tr>
+
+
+<%
+        while ( rs_three.next() ) {
+%>
+
+    <tr>
+    <td>
+        <input value="<%= rs_three.getString("co_number") %>" 
+            name="co_number" size="10">
+    </td>
+    <td>
+        <input value="<%= rs_three.getString("f_name") %>" 
+            name="f_name" size="10">
+    </td>
+    <td>
+        <input value="<%= rs_three.getString("quarter") %>" 
+            name="quarter" size="10">
+    </td>
+    <td>
+        <input value="<%= rs_three.getString("year") %>" 
+            name="year" size="10">
+    </td>
+    <td>
+        <input value="<%= rs_three.getString("a") %>" 
+            name="a" size="10">
+    </td>
+    <td>
+        <input value="<%= rs_three.getString("b") %>" 
+            name="b" size="10">
+    </td>
+    <td>
+        <input value="<%= rs_three.getString("c") %>" 
+            name="c" size="10">
+    </td>
+    <td>
+        <input value="<%= rs_three.getString("d") %>" 
+            name="d" size="10">
+    </td>
+    <td>
+        <input value="<%= rs_three.getString("other") %>" 
+            name="other" size="10">
+    </td>
+    </tr>
+<%
+        }
+%>
+    </table>
+
+
 <%-- -------- Close Connection Code -------- --%>
 <%
         // Close the ResultSet
         rs_one.close();
-        // rs_two.close();
+        rs_two.close();
+        rs_three.close();
         // Close the Statement
         statement1.close();
-        // statement2.close();
+        statement2.close();
+        statement3.close();
 
         // Close the Connection
         conn.close();
